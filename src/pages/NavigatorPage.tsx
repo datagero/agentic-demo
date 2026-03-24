@@ -1,6 +1,13 @@
 import { useState } from 'react'
 import { shipDecks, guest } from '../data/mock'
 
+/** Deterministic walk time based on POI name — consistent across renders */
+function walkTime(name: string): number {
+  let hash = 0
+  for (let i = 0; i < name.length; i++) hash = ((hash << 5) - hash + name.charCodeAt(i)) | 0
+  return (Math.abs(hash) % 4) + 1
+}
+
 export default function NavigatorPage() {
   const [selectedDeck, setSelectedDeck] = useState(15)
   const [searchQuery, setSearchQuery] = useState('')
@@ -23,7 +30,7 @@ export default function NavigatorPage() {
     : []
 
   return (
-    <div className={`flex flex-col bg-pcl-gray min-h-full ${accessibilityMode ? 'text-lg' : ''}`}>
+    <div className={`flex flex-col bg-pcl-gray min-h-full page-enter ${accessibilityMode ? 'text-lg' : ''}`}>
       {/* Header */}
       <div className="bg-pcl-navy text-white px-4 pt-6 pb-6">
         <div className="flex items-center justify-between">
@@ -109,7 +116,7 @@ export default function NavigatorPage() {
                   </p>
                 </div>
                 <span className={`text-gray-400 ${accessibilityMode ? 'text-sm' : 'text-xs'}`}>
-                  ~{Math.floor(Math.random() * 5) + 1} min walk
+                  ~{walkTime(result.name)} min walk
                 </span>
               </button>
             ))}
@@ -191,7 +198,7 @@ export default function NavigatorPage() {
                       </p>
                     </div>
                     <span className={`text-pcl-navy font-semibold ${accessibilityMode ? 'text-sm' : 'text-xs'}`}>
-                      {Math.floor(Math.random() * 4) + 1} min walk
+                      {walkTime(poi.name)} min walk
                     </span>
                   </div>
                 ))}

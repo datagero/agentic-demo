@@ -8,7 +8,7 @@ export default function ItineraryPage() {
   const dayData = itineraryDays.find((d) => d.day === selectedDay)
 
   return (
-    <div className="flex flex-col bg-pcl-gray min-h-full">
+    <div className="flex flex-col bg-pcl-gray min-h-full page-enter">
       {/* Header */}
       <div className="bg-pcl-navy text-white px-4 pt-6 pb-4">
         <p className="text-pcl-gold text-xs font-semibold uppercase tracking-widest mb-1">

@@ -67,7 +67,7 @@ export default function CommercePage() {
     : products.filter((p) => p.category === activeCategory)
 
   return (
-    <div className="flex flex-col bg-pcl-gray min-h-full">
+    <div className="flex flex-col bg-pcl-gray min-h-full page-enter">
       {/* Header */}
       <div className="bg-pcl-navy text-white px-4 pt-6 pb-6">
         <p className="text-pcl-gold text-xs font-semibold uppercase tracking-widest mb-1">

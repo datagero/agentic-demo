@@ -2,7 +2,7 @@ import { guest, voyage, quickActions, recommendations } from '../data/mock'
 
 export default function HomePage() {
   return (
-    <div className="flex flex-col bg-pcl-gray min-h-full">
+    <div className="flex flex-col bg-pcl-gray min-h-full page-enter">
       {/* Hero section */}
       <div className="bg-pcl-navy text-white px-4 pt-6 pb-8">
         <p className="text-pcl-gold text-xs font-semibold uppercase tracking-widest mb-1">
