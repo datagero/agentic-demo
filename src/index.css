@@ -1,0 +1,74 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  * {
+    -webkit-tap-highlight-color: transparent;
+  }
+
+  body {
+    @apply bg-gray-100 font-sans text-pcl-text antialiased;
+    overscroll-behavior: none;
+  }
+
+  /* Custom scrollbar for the mobile frame */
+  ::-webkit-scrollbar {
+    width: 0px;
+    background: transparent;
+  }
+}
+
+@layer components {
+  /* Mobile phone frame container */
+  .phone-frame {
+    @apply mx-auto bg-white shadow-2xl overflow-hidden;
+    max-width: 430px;
+    min-height: 100svh;
+    position: relative;
+  }
+
+  /* Screen content area (between header and bottom nav) */
+  .screen-content {
+    @apply overflow-y-auto;
+    /* header: 64px, bottom nav: 64px */
+    height: calc(100svh - 64px - 64px);
+  }
+
+  /* Princess Cruises branded button */
+  .btn-primary {
+    @apply bg-pcl-navy text-white font-semibold py-3 px-6 rounded-xl
+           active:scale-95 transition-transform duration-100;
+  }
+
+  .btn-gold {
+    @apply bg-pcl-gold text-pcl-navy font-semibold py-3 px-6 rounded-xl
+           active:scale-95 transition-transform duration-100;
+  }
+
+  /* Card component */
+  .card {
+    @apply bg-white rounded-2xl shadow-sm border border-gray-100 overflow-hidden;
+  }
+
+  /* Section label */
+  .section-label {
+    @apply text-xs font-semibold uppercase tracking-widest text-gray-400 px-4 mb-2;
+  }
+
+  /* Page transition animation */
+  .page-enter {
+    animation: pageEnter 200ms ease-out;
+  }
+
+  @keyframes pageEnter {
+    from {
+      opacity: 0;
+      transform: translateY(8px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+}
