@@ -1,6 +1,8 @@
 import type {
   Guest, Voyage, PortStop, ItineraryDay, Product,
   ShipDeck, AnalyticsData, QuickAction, Recommendation,
+  ContentItem, NotificationDraft, JourneyAnalyticsData,
+  CheckInStep, CompanionProfile,
 } from '../types'
 
 // ── Guest Profile ─────────────────────────────────────────────────────────────
@@ -209,3 +211,64 @@ export const analyticsData: AnalyticsData = {
     { id: 'al3', message: 'Check-in wait time approaching 8 min threshold', severity: 'warning', time: '1 hr ago' },
   ],
 }
+
+// ── CMS Content Items ─────────────────────────────────────────────────────────
+
+export const contentItems: ContentItem[] = [
+  { id: 'c1', title: 'Lido Deck Lunch Menu — Week 2', type: 'menu', status: 'published', lastUpdated: '2 hours ago', aemSynced: true },
+  { id: 'c2', title: 'Princess Cays Shore Guide', type: 'deck-info', status: 'published', lastUpdated: '1 day ago', aemSynced: true },
+  { id: 'c3', title: 'Spa Early Bird Promotion', type: 'promotion', status: 'scheduled', lastUpdated: '3 hours ago', aemSynced: false },
+  { id: 'c4', title: 'Evening Entertainment Schedule', type: 'activity', status: 'draft', lastUpdated: '30 min ago', aemSynced: false },
+  { id: 'c5', title: 'Muster Drill Safety Brief', type: 'safety', status: 'published', lastUpdated: '5 days ago', aemSynced: true },
+  { id: 'c6', title: 'Captain\'s Circle Loyalty Rewards', type: 'promotion', status: 'draft', lastUpdated: '1 hour ago', aemSynced: false },
+]
+
+export const notificationDrafts: NotificationDraft[] = [
+  { id: 'n1', title: 'Port Arrival', message: 'We arrive at Princess Cays at 8:00 AM. Tenders begin at 8:30 AM from Deck 3.', audience: 'all', status: 'scheduled', scheduledFor: 'Apr 9 · 7:30 AM' },
+  { id: 'n2', title: 'Spa Flash Sale', message: '20% off all afternoon treatments today. Book now in the app!', audience: 'loyalty-tier', audienceDetail: 'Gold & above', status: 'draft' },
+  { id: 'n3', title: 'Pool Deck Event', message: 'Live music at the Sky Pool starting at 4 PM. Don\'t miss it!', audience: 'deck', audienceDetail: 'Decks 14-17', status: 'sent' },
+]
+
+// ── Guest Journey Analytics ───────────────────────────────────────────────────
+
+export const journeyAnalytics: JourneyAnalyticsData = {
+  funnel: [
+    { stage: 'App Open', count: 125000, dropOff: 0, isHighlighted: false },
+    { stage: 'Voyage Discovery', count: 98000, dropOff: 21.6, isHighlighted: false },
+    { stage: 'Itinerary View', count: 82000, dropOff: 16.3, isHighlighted: false },
+    { stage: 'Pre-Cruise Purchase', count: 45000, dropOff: 45.1, isHighlighted: true },
+    { stage: 'Check-In Complete', count: 38000, dropOff: 15.6, isHighlighted: false },
+    { stage: 'Onboard Engagement', count: 34000, dropOff: 10.5, isHighlighted: false },
+    { stage: 'Post-Cruise Survey', count: 12000, dropOff: 64.7, isHighlighted: true },
+  ],
+  npsTrend: [
+    { date: 'Mon', value: 62 },
+    { date: 'Tue', value: 65 },
+    { date: 'Wed', value: 64 },
+    { date: 'Thu', value: 68 },
+    { date: 'Fri', value: 70 },
+    { date: 'Sat', value: 72 },
+    { date: 'Sun', value: 72 },
+  ],
+  conversionDrivers: [
+    { driver: 'AI-personalized recommendations', impact: '+8.2% conversion', direction: 'up' },
+    { driver: 'Medallion-tiered pricing', impact: '+12% Gold member spend', direction: 'up' },
+    { driver: 'OceanReady check-in friction', impact: '-15.6% completion', direction: 'down' },
+    { driver: 'Post-cruise survey length', impact: '-64.7% response rate', direction: 'down' },
+  ],
+}
+
+// ── OceanReady Check-In ───────────────────────────────────────────────────────
+
+export const checkInSteps: CheckInStep[] = [
+  { id: 's1', label: 'Personal Information', status: 'complete', aiAssisted: true, detail: 'Auto-filled from Medallion profile' },
+  { id: 's2', label: 'Travel Documents', status: 'complete', aiAssisted: true, detail: 'Passport verified via OCR scan' },
+  { id: 's3', label: 'Health Screening', status: 'complete', aiAssisted: false, detail: 'Completed Mar 20' },
+  { id: 's4', label: 'Emergency Contact', status: 'in-progress', aiAssisted: false, detail: 'Requires manual entry' },
+  { id: 's5', label: 'Payment Method', status: 'pending', aiAssisted: true, detail: 'Medallion wallet auto-link available' },
+]
+
+export const companions: CompanionProfile[] = [
+  { name: 'James Mitchell', initials: 'JM', relation: 'Spouse', completionPct: 80, currentStep: 'Emergency Contact' },
+  { name: 'Emma Mitchell', initials: 'EM', relation: 'Child (14)', completionPct: 40, currentStep: 'Health Screening' },
+]

@@ -1,4 +1,6 @@
+import { Link } from 'react-router-dom'
 import { guest, voyage, quickActions, recommendations } from '../data/mock'
+import { ROUTES } from '../routes'
 
 export default function HomePage() {
   return (
@@ -35,6 +37,20 @@ export default function HomePage() {
           <div className="text-pcl-gold font-bold text-sm">{guest.medallionTier}</div>
         </div>
       </div>
+
+      {/* OceanReady check-in banner */}
+      <Link to={ROUTES.CHECKIN} className="block mx-4 mt-3">
+        <div className="card p-4 flex items-center gap-3 bg-gradient-to-r from-blue-50 to-white border-l-4 border-blue-500 hover:shadow-md transition-shadow">
+          <span className="text-2xl" aria-hidden="true">🛳️</span>
+          <div className="flex-1">
+            <p className="font-semibold text-sm text-pcl-text">OceanReady Check-In</p>
+            <p className="text-xs text-gray-400">3 of 5 steps complete — finish before sailing</p>
+          </div>
+          <div className="text-right">
+            <p className="text-lg font-bold text-pcl-navy">60%</p>
+          </div>
+        </div>
+      </Link>
 
       {/* Quick actions */}
       <div className="px-4 mt-4">

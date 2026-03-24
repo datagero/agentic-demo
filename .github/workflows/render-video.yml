@@ -1,0 +1,157 @@
+name: Render & Host PCL Video
+
+on:
+  workflow_dispatch:
+  push:
+    branches: [team/pcl-remotion-video]
+    paths: ['remotion/**']
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+concurrency:
+  group: pages
+  cancel-in-progress: true
+
+jobs:
+  render:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          submodules: true
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+
+      - name: Install dependencies
+        working-directory: remotion
+        run: npm install
+
+      - name: Install Chrome dependencies
+        run: |
+          sudo apt-get update -qq
+          sudo apt-get install -y -qq libnspr4 libnss3 libatk1.0-0 libatk-bridge2.0-0 \
+            libcups2 libdrm2 libxkbcommon0 libxcomposite1 libxdamage1 libxrandr2 \
+            libgbm1 libpango-1.0-0 libcairo2 libasound2 libxshmfence1
+
+      - name: Render video
+        working-directory: remotion
+        run: npx remotion render PCLVideo out/pcl-video.mp4
+
+      - name: Create hosting page
+        working-directory: remotion
+        run: |
+          mkdir -p out/site
+          cp out/pcl-video.mp4 out/site/
+          cat > out/site/index.html << 'HTMLEOF'
+          <!DOCTYPE html>
+          <html lang="en">
+          <head>
+            <meta charset="UTF-8">
+            <meta name="viewport" content="width=device-width, initial-scale=1.0">
+            <title>Princess Cruises — Mobile App Transformation</title>
+            <style>
+              * { margin: 0; padding: 0; box-sizing: border-box; }
+              body {
+                background: #0a0a1a;
+                color: #fff;
+                font-family: -apple-system, BlinkMacSystemFont, 'Inter', sans-serif;
+                display: flex;
+                flex-direction: column;
+                align-items: center;
+                justify-content: center;
+                min-height: 100vh;
+                padding: 24px;
+              }
+              .badge {
+                display: inline-flex;
+                align-items: center;
+                gap: 8px;
+                background: rgba(196, 169, 98, 0.15);
+                border: 1px solid rgba(196, 169, 98, 0.3);
+                border-radius: 999px;
+                padding: 6px 16px;
+                font-size: 12px;
+                font-weight: 600;
+                color: #C4A962;
+                letter-spacing: 0.1em;
+                text-transform: uppercase;
+                margin-bottom: 16px;
+              }
+              h1 {
+                font-family: Georgia, serif;
+                font-size: clamp(24px, 4vw, 42px);
+                font-weight: 600;
+                color: #fff;
+                margin-bottom: 8px;
+                text-align: center;
+              }
+              .subtitle {
+                color: #9CA3AF;
+                font-size: 16px;
+                margin-bottom: 32px;
+                text-align: center;
+              }
+              video {
+                width: 100%;
+                max-width: 960px;
+                border-radius: 12px;
+                box-shadow: 0 0 0 1px rgba(255,255,255,0.08), 0 24px 80px rgba(0,0,0,0.6);
+              }
+              .footer {
+                margin-top: 24px;
+                color: #4B5563;
+                font-size: 12px;
+                letter-spacing: 0.05em;
+              }
+              .download {
+                display: inline-flex;
+                align-items: center;
+                gap: 8px;
+                margin-top: 16px;
+                padding: 10px 24px;
+                background: #003B6F;
+                color: #fff;
+                border-radius: 8px;
+                text-decoration: none;
+                font-weight: 600;
+                font-size: 14px;
+                transition: background 0.2s;
+              }
+              .download:hover { background: #004F96; }
+            </style>
+          </head>
+          <body>
+            <div class="badge">Thoughtworks × Princess Cruises</div>
+            <h1>Mobile App Transformation</h1>
+            <p class="subtitle">Prototype Demo — Background Presentation Video</p>
+            <video controls autoplay loop muted playsinline>
+              <source src="pcl-video.mp4" type="video/mp4">
+            </video>
+            <a class="download" href="pcl-video.mp4" download>
+              ⬇ Download MP4
+            </a>
+            <p class="footer">Confidential — RFP Response 2026</p>
+          </body>
+          </html>
+          HTMLEOF
+
+      - name: Upload Pages artifact
+        uses: actions/upload-pages-artifact@v3
+        with:
+          path: remotion/out/site
+
+  deploy:
+    needs: render
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - name: Deploy to GitHub Pages
+        id: deployment
+        uses: actions/deploy-pages@v4

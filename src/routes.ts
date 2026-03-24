@@ -1,0 +1,12 @@
+// Central route definitions — imported by both App.tsx and AppLayout.tsx
+// to avoid circular dependencies.
+export const ROUTES = {
+  HOME: '/',
+  ITINERARY: '/itinerary',
+  COMMERCE: '/commerce',
+  NAVIGATOR: '/navigator',
+  ANALYTICS: '/analytics',
+  CMS: '/cms',
+  JOURNEY: '/journey',
+  CHECKIN: '/checkin',
+} as const

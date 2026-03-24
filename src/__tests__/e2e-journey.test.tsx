@@ -1,16 +1,16 @@
-import { render, screen } from '@testing-library/react'
+import { render, screen, within } from '@testing-library/react'
 import { describe, it, expect } from 'vitest'
 import userEvent from '@testing-library/user-event'
 import App from '../App'
 
 /**
- * End-to-end integration test: Sarah's 5-screen journey
+ * End-to-end integration test: Sarah's 8-screen journey
  *
- * Simulates the 1-minute demo walkthrough navigating all 5 screens
+ * Simulates the 1-minute demo walkthrough navigating all 8 screens
  * and verifying key content and interactions at each stop.
  */
 describe('E2E: Sarah\'s Demo Journey', () => {
-  it('walks through all 5 screens with key interactions', async () => {
+  it('walks through all 8 screens with key interactions', async () => {
     const user = userEvent.setup()
     render(<App />)
 
@@ -24,6 +24,26 @@ describe('E2E: Sarah\'s Demo Journey', () => {
     // Verify recommendations are loaded
     expect(screen.getByText("Chef's Table Experience")).toBeInTheDocument()
     expect(screen.getByText('Based on your love of Italian cuisine')).toBeInTheDocument()
+
+    // ── Screen 2: CheckIn (via OceanReady banner) ───────────────────────
+    await user.click(screen.getByText('OceanReady Check-In'))
+
+    // Verify CheckIn page content
+    expect(screen.getByRole('heading', { name: /oceanready/i })).toBeInTheDocument()
+    expect(screen.getByRole('progressbar')).toBeInTheDocument()
+    expect(screen.getByText(/3 of 5 steps complete/)).toBeInTheDocument()
+
+    // Verify AI Assisted badges
+    const aiBadges = screen.getAllByText('AI Assisted')
+    expect(aiBadges.length).toBeGreaterThan(0)
+
+    // Verify companion names
+    expect(screen.getByText('James Mitchell')).toBeInTheDocument()
+    expect(screen.getByText('Emma Mitchell')).toBeInTheDocument()
+
+    // Navigate back to Home
+    await user.click(screen.getByRole('button', { name: /back to home/i }))
+    expect(screen.getByText('Caribbean Princess')).toBeInTheDocument()
 
     // ── Navigate to Itinerary ─────────────────────────────────────────────
     await user.click(screen.getByRole('link', { name: /itinerary/i }))
@@ -106,11 +126,54 @@ describe('E2E: Sarah\'s Demo Journey', () => {
     // Toggle to 30-day view
     await user.click(screen.getByText('Last 30 Days'))
 
+    // ── Screen 6: Journey (via KPI card) ────────────────────────────────
+    // Click a KPI card to navigate to the Journey deep-dive
+    await user.click(screen.getByLabelText(/NPS Score/))
+
+    expect(screen.getByRole('heading', { name: /guest journey/i })).toBeInTheDocument()
+
+    // Verify funnel stages
+    expect(screen.getByText('App Open')).toBeInTheDocument()
+    expect(screen.getByText('Pre-Cruise Purchase')).toBeInTheDocument()
+
+    // Verify NPS value
+    expect(screen.getByText('72')).toBeInTheDocument()
+
+    // Verify conversion drivers
+    expect(screen.getByText('AI-personalized recommendations')).toBeInTheDocument()
+    expect(screen.getByText('Medallion-tiered pricing')).toBeInTheDocument()
+
+    // Navigate back to Analytics
+    await user.click(screen.getByRole('button', { name: /back to analytics/i }))
+    expect(screen.getByRole('heading', { name: /analytics/i })).toBeInTheDocument()
+
+    // ── Screen 7: CMS (via Manage tab) ──────────────────────────────────
+    await user.click(screen.getByRole('link', { name: /manage/i }))
+
+    expect(screen.getByRole('heading', { name: /content manager/i })).toBeInTheDocument()
+
+    // Verify content items are present
+    expect(screen.getByText('Lido Deck Lunch Menu — Week 2')).toBeInTheDocument()
+    expect(screen.getByText('Princess Cays Shore Guide')).toBeInTheDocument()
+    expect(screen.getByText('Muster Drill Safety Brief')).toBeInTheDocument()
+
+    // Switch to Notifications tab
+    await user.click(screen.getByText('Notifications'))
+
+    // Verify notification composer elements
+    expect(screen.getByLabelText(/notification title/i)).toBeInTheDocument()
+    expect(screen.getByLabelText(/notification message/i)).toBeInTheDocument()
+    expect(screen.getByLabelText(/send notification/i)).toBeInTheDocument()
+
+    // Verify recent notifications
+    expect(screen.getByText('Port Arrival')).toBeInTheDocument()
+    expect(screen.getByText('Spa Flash Sale')).toBeInTheDocument()
+
     // ── Navigate back to Home ─────────────────────────────────────────────
     await user.click(screen.getByRole('link', { name: /home/i }))
     expect(screen.getByText('Caribbean Princess')).toBeInTheDocument()
 
-    // Full journey complete — demo can be walked through end-to-end
+    // Full 8-screen journey complete — demo can be walked through end-to-end
   })
 
   it('maintains consistent branding across all screens', async () => {
@@ -142,13 +205,17 @@ describe('E2E: Sarah\'s Demo Journey', () => {
     // Analytics
     await user.click(screen.getByRole('link', { name: /insights/i }))
     checkBranding()
+
+    // CMS
+    await user.click(screen.getByRole('link', { name: /manage/i }))
+    checkBranding()
   })
 
   it('navigation tabs highlight correctly for each screen', async () => {
     const user = userEvent.setup()
     render(<App />)
 
-    const tabNames = ['Home', 'Itinerary', 'Shop', 'Navigator', 'Insights']
+    const tabNames = ['Home', 'Itinerary', 'Shop', 'Navigator', 'Insights', 'Manage']
 
     for (const name of tabNames) {
       const link = screen.getByRole('link', { name: new RegExp(name, 'i') })
