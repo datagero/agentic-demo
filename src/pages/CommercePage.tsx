@@ -114,7 +114,7 @@ export default function CommercePage() {
       </div>
 
       {/* Product list */}
-      <div className="px-4 mt-3 space-y-3 pb-20">
+      <div className="px-4 mt-3 space-y-3 pb-20" aria-live="polite">
         <p className="section-label px-0">{filtered.length} {activeCategory === 'All' ? 'Items' : CATEGORY_LABELS[activeCategory]}</p>
         {filtered.map((product) => (
           <ProductCard key={product.id} product={product} />

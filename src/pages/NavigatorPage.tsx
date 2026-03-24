@@ -1,5 +1,6 @@
 import { useState } from 'react'
 import { shipDecks, guest } from '../data/mock'
+import { useAccessibility } from '../contexts/AccessibilityContext'
 
 /** Deterministic walk time based on POI name — consistent across renders */
 function walkTime(name: string): number {
@@ -11,7 +12,7 @@ function walkTime(name: string): number {
 export default function NavigatorPage() {
   const [selectedDeck, setSelectedDeck] = useState(15)
   const [searchQuery, setSearchQuery] = useState('')
-  const [accessibilityMode, setAccessibilityMode] = useState(false)
+  const { highContrast: accessibilityMode, toggleHighContrast } = useAccessibility()
 
   const currentDeck = shipDecks.find((d) => d.deckNumber === selectedDeck)
 
@@ -44,7 +45,7 @@ export default function NavigatorPage() {
 
           {/* Accessibility toggle */}
           <button
-            onClick={() => setAccessibilityMode(!accessibilityMode)}
+            onClick={toggleHighContrast}
             className={`flex items-center gap-1.5 px-3 py-1.5 rounded-full text-xs font-semibold transition-colors ${
               accessibilityMode
                 ? 'bg-pcl-gold text-pcl-navy'

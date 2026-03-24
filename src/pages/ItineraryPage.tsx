@@ -66,7 +66,7 @@ export default function ItineraryPage() {
 
           {/* Day details */}
           {dayData ? (
-            <div className="px-4 py-4">
+            <div className="px-4 py-4" aria-live="polite">
               {/* Weather + location */}
               <div className="card p-3 flex items-center justify-between mb-4">
                 <div className="flex items-center gap-2">

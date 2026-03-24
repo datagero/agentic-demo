@@ -2,14 +2,17 @@ import { render, screen } from '@testing-library/react'
 import { describe, it, expect } from 'vitest'
 import userEvent from '@testing-library/user-event'
 import { BrowserRouter } from 'react-router-dom'
+import { AccessibilityProvider } from '../contexts/AccessibilityContext'
 import NavigatorPage from '../pages/NavigatorPage'
 import { guest, shipDecks } from '../data/mock'
 
 function renderPage() {
   return render(
-    <BrowserRouter>
-      <NavigatorPage />
-    </BrowserRouter>
+    <AccessibilityProvider>
+      <BrowserRouter>
+        <NavigatorPage />
+      </BrowserRouter>
+    </AccessibilityProvider>
   )
 }
 
