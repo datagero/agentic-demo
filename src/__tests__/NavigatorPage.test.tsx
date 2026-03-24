@@ -85,4 +85,27 @@ describe('NavigatorPage', () => {
     const promenade = shipDecks.find((d) => d.deckNumber === 7)!
     expect(screen.getByText(promenade.name)).toBeInTheDocument()
   })
+
+  it('clicking a search result selects that deck and clears search', async () => {
+    const user = userEvent.setup()
+    renderPage()
+
+    const searchInput = screen.getByLabelText(/search for locations/i)
+    await user.type(searchInput, 'Casino')
+
+    // Click the Casino result (on Promenade Deck 7)
+    const result = screen.getByText('Princess Casino')
+    await user.click(result)
+
+    // Search should be cleared and Promenade Deck should be selected
+    expect(screen.getByText('Promenade Deck')).toBeInTheDocument()
+    expect(screen.queryByText('Search Results')).not.toBeInTheDocument()
+  })
+
+  it('shows walking time for POIs on the selected deck', () => {
+    renderPage()
+    // Default deck 15 (Lido) has Horizon Court Buffet
+    const walkTexts = screen.getAllByText(/min walk/)
+    expect(walkTexts.length).toBeGreaterThan(0)
+  })
 })

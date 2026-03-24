@@ -79,4 +79,43 @@ describe('ItineraryPage', () => {
     await user.click(screen.getByText('Daily Plan'))
     expect(screen.getByText('Activities')).toBeInTheDocument()
   })
+
+  it('shows empty state when selecting a day with no activities', async () => {
+    const user = userEvent.setup()
+    renderPage()
+
+    // Day 4 (San Juan) has no itinerary data in mock — should show fallback
+    await user.click(screen.getByText('Day 4'))
+    expect(screen.getByText(/select a day to view your personalized schedule/i)).toBeInTheDocument()
+  })
+
+  it('switches to day 2 and shows day 2 activities', async () => {
+    const user = userEvent.setup()
+    renderPage()
+
+    await user.click(screen.getByText('Day 2'))
+    // Day 2 has "Sunrise Yoga" and "Mixology Masterclass"
+    expect(screen.getByText('Sunrise Yoga')).toBeInTheDocument()
+    expect(screen.getByText('Mixology Masterclass')).toBeInTheDocument()
+  })
+
+  it('clicking a port in ports view switches to daily plan for that day', async () => {
+    const user = userEvent.setup()
+    renderPage()
+
+    // Go to ports view
+    await user.click(screen.getByText('All Ports'))
+
+    // Click on Princess Cays (Day 3)
+    await user.click(screen.getByText('Princess Cays, Bahamas'))
+
+    // Should switch to daily plan showing Day 3 activities
+    expect(screen.getByText('Snorkeling Adventure')).toBeInTheDocument()
+  })
+
+  it('shows activity descriptions when present', () => {
+    renderPage()
+    // Day 1 "Sail Away Party" has a description
+    expect(screen.getByText('Live DJ and complimentary cocktails')).toBeInTheDocument()
+  })
 })
