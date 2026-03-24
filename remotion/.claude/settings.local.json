@@ -1,0 +1,11 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(find /Users/matias.vizcaino/Documents/datagero_repos/agentic-ops-workspace -type f -name *.test.ts -o -name *.spec.ts)",
+      "Bash(npx remotion:*)",
+      "Bash(ELEVENLABS_API_KEY=sk_e0b486de75ace973de357df5f3c6db71f8a02c6d6b07f6d3 npx tsx generate-voiceover.ts 2>&1)",
+      "Bash(curl -s -X POST \"https://api.elevenlabs.io/v1/text-to-speech/JBFqnCBsd6RMkjVDRZzb\" -H \"xi-api-key: sk_889a2c5c27169c531a408562d7fed781471e8926a8b8d466\" -H \"Content-Type: application/json\" -H \"Accept: audio/mpeg\" -d '{\"\"text\"\":\"\"Test.\"\",\"\"model_id\"\":\"\"eleven_multilingual_v2\"\",\"\"voice_settings\"\":{\"\"stability\"\":0.5,\"\"similarity_boost\"\":0.75}}' -o /tmp/test2.mp3 -w \"\\\\nHTTP %{http_code}, Size: %{size_download}\")",
+      "Read(//tmp/**)"
+    ]
+  }
+}
