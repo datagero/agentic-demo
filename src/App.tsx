@@ -7,6 +7,9 @@ import ItineraryPage from './pages/ItineraryPage'
 import CommercePage from './pages/CommercePage'
 import NavigatorPage from './pages/NavigatorPage'
 import AnalyticsPage from './pages/AnalyticsPage'
+import CmsPage from './pages/CmsPage'
+import JourneyPage from './pages/JourneyPage'
+import CheckInPage from './pages/CheckInPage'
 import { ROUTES } from './routes'
 
 export { ROUTES }
@@ -27,6 +30,9 @@ function App() {
             <Route path={ROUTES.COMMERCE} element={<Screen><CommercePage /></Screen>} />
             <Route path={ROUTES.NAVIGATOR} element={<Screen><NavigatorPage /></Screen>} />
             <Route path={ROUTES.ANALYTICS} element={<Screen><AnalyticsPage /></Screen>} />
+            <Route path={ROUTES.CMS} element={<Screen><CmsPage /></Screen>} />
+            <Route path={ROUTES.JOURNEY} element={<Screen><JourneyPage /></Screen>} />
+            <Route path={ROUTES.CHECKIN} element={<Screen><CheckInPage /></Screen>} />
             {/* Catch-all redirect to home */}
             <Route path="*" element={<Navigate to={ROUTES.HOME} replace />} />
           </Route>

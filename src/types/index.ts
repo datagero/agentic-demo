@@ -113,3 +113,57 @@ export interface Recommendation {
   category: string
   aiReason: string
 }
+
+// ── CMS & Notifications (Screen 6) ───────────────────────────────────────────
+
+export interface ContentItem {
+  id: string
+  title: string
+  type: 'menu' | 'activity' | 'deck-info' | 'promotion' | 'safety'
+  status: 'published' | 'draft' | 'scheduled'
+  lastUpdated: string
+  aemSynced: boolean
+}
+
+export interface NotificationDraft {
+  id: string
+  title: string
+  message: string
+  audience: 'all' | 'deck' | 'loyalty-tier' | 'port-day'
+  audienceDetail?: string
+  scheduledFor?: string
+  status: 'draft' | 'sent' | 'scheduled'
+}
+
+// ── Guest Journey Analytics (Screen 7) ────────────────────────────────────────
+
+export interface JourneyFunnelStage {
+  stage: string
+  count: number
+  dropOff: number // percentage drop from previous stage
+  isHighlighted: boolean // biggest drop-off
+}
+
+export interface JourneyAnalyticsData {
+  funnel: JourneyFunnelStage[]
+  npsTrend: TimeSeriesPoint[]
+  conversionDrivers: { driver: string; impact: string; direction: 'up' | 'down' }[]
+}
+
+// ── OceanReady Check-In (Screen 8) ───────────────────────────────────────────
+
+export interface CheckInStep {
+  id: string
+  label: string
+  status: 'complete' | 'in-progress' | 'pending'
+  aiAssisted: boolean
+  detail?: string
+}
+
+export interface CompanionProfile {
+  name: string
+  initials: string
+  relation: string
+  completionPct: number
+  currentStep: string
+}

@@ -1,5 +1,7 @@
 import { useState } from 'react'
+import { useNavigate } from 'react-router-dom'
 import { analyticsData } from '../data/mock'
+import { ROUTES } from '../routes'
 
 function TrendArrow({ trend }: { trend: number }) {
   const isPositive = trend > 0
@@ -31,6 +33,7 @@ function MiniBarChart({ data }: { data: { date: string; value: number }[] }) {
 }
 
 export default function AnalyticsPage() {
+  const navigate = useNavigate()
   const [period, setPeriod] = useState<'7d' | '30d'>('7d')
   const { kpis, engagementFunnel, spendBreakdown, dailyRevenue, alerts } = analyticsData
 
@@ -67,7 +70,7 @@ export default function AnalyticsPage() {
         <p className="section-label px-0">Key Metrics</p>
         <div className="grid grid-cols-2 gap-3">
           {kpis.map((kpi) => (
-            <div key={kpi.label} className="card p-4">
+            <button key={kpi.label} className="card p-4 text-left hover:shadow-md transition-shadow w-full" onClick={() => navigate(ROUTES.JOURNEY)} aria-label={`${kpi.label} — tap for journey analytics`}>
               <div className="flex items-center justify-between mb-2">
                 <span className="text-xl" aria-hidden="true">{kpi.icon}</span>
                 <TrendArrow trend={kpi.trend} />
@@ -91,7 +94,7 @@ export default function AnalyticsPage() {
                   }}
                 />
               </div>
-            </div>
+            </button>
           ))}
         </div>
       </div>
