@@ -1,0 +1,211 @@
+import type {
+  Guest, Voyage, PortStop, ItineraryDay, Product,
+  ShipDeck, AnalyticsData, QuickAction, Recommendation,
+} from '../types'
+
+// ── Guest Profile ─────────────────────────────────────────────────────────────
+
+export const guest: Guest = {
+  firstName: 'Sarah',
+  lastName: 'Mitchell',
+  initials: 'SM',
+  medallionTier: 'Gold',
+  medallionPoints: 2450,
+  cabinNumber: 'D412',
+  cabinDeck: 'Dolphin Deck 9',
+}
+
+// ── Voyage ────────────────────────────────────────────────────────────────────
+
+export const voyage: Voyage = {
+  shipName: 'Caribbean Princess',
+  region: 'Eastern Caribbean',
+  nights: 7,
+  departureDate: 'Apr 7',
+  returnDate: 'Apr 14',
+  daysUntilDeparture: 14,
+  currentDay: null,
+}
+
+// ── Port Stops ────────────────────────────────────────────────────────────────
+
+export const portStops: PortStop[] = [
+  { day: 1, port: 'Fort Lauderdale, FL', date: 'Apr 7', type: 'Embarkation', icon: '🚢', departureTime: '4:00 PM' },
+  { day: 2, port: 'At Sea', date: 'Apr 8', type: 'Sea Day', icon: '🌊' },
+  { day: 3, port: 'Princess Cays, Bahamas', date: 'Apr 9', type: 'Private Island', icon: '🏖️', arrivalTime: '8:00 AM', departureTime: '5:00 PM' },
+  { day: 4, port: 'San Juan, Puerto Rico', date: 'Apr 10', type: 'Port Day', icon: '🏛️', arrivalTime: '7:00 AM', departureTime: '6:00 PM' },
+  { day: 5, port: 'St. Thomas, USVI', date: 'Apr 11', type: 'Port Day', icon: '🌴', arrivalTime: '8:00 AM', departureTime: '5:00 PM' },
+  { day: 6, port: 'At Sea', date: 'Apr 12', type: 'Sea Day', icon: '🌊' },
+  { day: 7, port: 'At Sea', date: 'Apr 13', type: 'Sea Day', icon: '🌊' },
+  { day: 8, port: 'Fort Lauderdale, FL', date: 'Apr 14', type: 'Disembarkation', icon: '🏠', arrivalTime: '6:00 AM' },
+]
+
+// ── Itinerary Days ────────────────────────────────────────────────────────────
+
+export const itineraryDays: ItineraryDay[] = [
+  {
+    day: 1, date: 'Apr 7', port: 'Fort Lauderdale', isSeaDay: false,
+    weather: { temp: 82, condition: 'Sunny', icon: '☀️' },
+    activities: [
+      { id: 'a1', time: '12:00 PM', title: 'Embarkation & Welcome', location: 'Terminal', category: 'social', aiRecommended: false, medallionPersonalized: false },
+      { id: 'a2', time: '3:00 PM', title: 'Muster Drill', location: 'Muster Station B', category: 'social', aiRecommended: false, medallionPersonalized: false },
+      { id: 'a3', time: '4:00 PM', title: 'Sail Away Party', location: 'Lido Deck', category: 'entertainment', aiRecommended: true, medallionPersonalized: false, description: 'Live DJ and complimentary cocktails' },
+      { id: 'a4', time: '6:30 PM', title: 'Welcome Dinner', location: 'Allegro Dining Room', category: 'dining', aiRecommended: true, medallionPersonalized: true, description: 'Based on your preference for Italian cuisine' },
+      { id: 'a5', time: '9:00 PM', title: 'Broadway Show: Rock Opera', location: 'Princess Theater', category: 'entertainment', aiRecommended: false, medallionPersonalized: false },
+    ],
+  },
+  {
+    day: 2, date: 'Apr 8', port: 'At Sea', isSeaDay: true,
+    weather: { temp: 84, condition: 'Partly Cloudy', icon: '⛅' },
+    activities: [
+      { id: 'b1', time: '7:00 AM', title: 'Sunrise Yoga', location: 'Sun Deck', category: 'wellness', aiRecommended: true, medallionPersonalized: true, description: 'Recommended based on your wellness profile' },
+      { id: 'b2', time: '9:00 AM', title: 'Breakfast Buffet', location: 'Horizon Court', category: 'dining', aiRecommended: false, medallionPersonalized: false },
+      { id: 'b3', time: '11:00 AM', title: 'Mixology Masterclass', location: 'Crooners Bar', category: 'entertainment', aiRecommended: true, medallionPersonalized: false },
+      { id: 'b4', time: '1:00 PM', title: 'Lotus Spa Treatment', location: 'Lotus Spa, Deck 15', category: 'wellness', aiRecommended: true, medallionPersonalized: true, description: 'Gold members: complimentary upgrade to hot stones' },
+      { id: 'b5', time: '5:00 PM', title: 'Chef\'s Table Experience', location: 'Chef\'s Table, Deck 6', category: 'dining', aiRecommended: true, medallionPersonalized: true, description: 'Exclusive 8-course tasting menu' },
+      { id: 'b6', time: '8:30 PM', title: 'Comedy Night', location: 'Princess Theater', category: 'entertainment', aiRecommended: false, medallionPersonalized: false },
+    ],
+  },
+  {
+    day: 3, date: 'Apr 9', port: 'Princess Cays, Bahamas', isSeaDay: false,
+    weather: { temp: 86, condition: 'Sunny', icon: '☀️' },
+    activities: [
+      { id: 'c1', time: '8:00 AM', title: 'Tender to Princess Cays', location: 'Deck 3 Tender Platform', category: 'excursion', aiRecommended: false, medallionPersonalized: false },
+      { id: 'c2', time: '9:30 AM', title: 'Snorkeling Adventure', location: 'Princess Cays Beach', category: 'excursion', aiRecommended: true, medallionPersonalized: false, description: 'Top-rated excursion — 4.8 stars' },
+      { id: 'c3', time: '12:00 PM', title: 'Beach BBQ Lunch', location: 'Beachside Grill', category: 'dining', aiRecommended: false, medallionPersonalized: false },
+      { id: 'c4', time: '2:00 PM', title: 'Kayak Tour', location: 'Water Sports Center', category: 'excursion', aiRecommended: true, medallionPersonalized: true, description: 'Based on your love of water activities' },
+      { id: 'c5', time: '5:00 PM', title: 'Return to Ship', location: 'Tender Platform', category: 'social', aiRecommended: false, medallionPersonalized: false },
+    ],
+  },
+]
+
+// ── Products ──────────────────────────────────────────────────────────────────
+
+export const products: Product[] = [
+  { id: 'p1', name: 'Sabatini\'s Italian Trattoria', category: 'dining', price: 29, description: 'Authentic Italian cuisine with handmade pasta', image: '🍝', medallionDiscount: true, rating: 4.8, reviewCount: 342 },
+  { id: 'p2', name: 'Crown Grill Steakhouse', category: 'dining', price: 39, description: 'Premium steaks and fresh seafood', image: '🥩', medallionDiscount: false, rating: 4.7, reviewCount: 287 },
+  { id: 'p3', name: 'Deep Tissue Massage', category: 'spa', price: 119, originalPrice: 149, description: '50-min therapeutic massage at Lotus Spa', image: '💆', medallionDiscount: true, rating: 4.9, reviewCount: 156 },
+  { id: 'p4', name: 'Couples Spa Retreat', category: 'spa', price: 199, originalPrice: 249, description: 'Side-by-side treatments with champagne', image: '🧖', medallionDiscount: true, rating: 4.9, reviewCount: 89 },
+  { id: 'p5', name: 'Snorkeling at Princess Cays', category: 'excursion', price: 79, description: 'Guided reef tour with equipment included', image: '🤿', medallionDiscount: false, rating: 4.8, reviewCount: 412 },
+  { id: 'p6', name: 'San Juan Old City Walking Tour', category: 'excursion', price: 59, description: 'Historic walking tour with local guide', image: '🏛️', medallionDiscount: false, rating: 4.6, reviewCount: 234 },
+  { id: 'p7', name: 'Premium Beverage Package', category: 'beverage', price: 69, originalPrice: 89, description: 'Unlimited cocktails, wine & beer daily', image: '🍸', medallionDiscount: true, rating: 4.5, reviewCount: 1023 },
+  { id: 'p8', name: 'Photo Package — Unlimited', category: 'retail', price: 179, originalPrice: 229, description: 'All professional photos from your voyage', image: '📸', medallionDiscount: true, rating: 4.4, reviewCount: 567 },
+]
+
+// ── Ship Decks ────────────────────────────────────────────────────────────────
+
+export const shipDecks: ShipDeck[] = [
+  {
+    deckNumber: 17, name: 'Sun Deck', icon: '☀️',
+    pointsOfInterest: [
+      { name: 'The Sanctuary', icon: '🧘', category: 'wellness' },
+      { name: 'Sports Court', icon: '🏀', category: 'recreation' },
+      { name: 'Jogging Track', icon: '🏃', category: 'recreation' },
+    ],
+  },
+  {
+    deckNumber: 16, name: 'Sky Deck', icon: '🌤️',
+    pointsOfInterest: [
+      { name: 'Sky Pool', icon: '🏊', category: 'recreation' },
+      { name: 'Hot Tubs', icon: '♨️', category: 'recreation' },
+      { name: 'Outrigger Bar', icon: '🍹', category: 'dining' },
+      { name: 'Movies Under the Stars', icon: '🎬', category: 'entertainment' },
+    ],
+  },
+  {
+    deckNumber: 15, name: 'Lido Deck', icon: '🏊',
+    pointsOfInterest: [
+      { name: 'Horizon Court Buffet', icon: '🍽️', category: 'dining' },
+      { name: 'Trident Grill', icon: '🍔', category: 'dining' },
+      { name: 'Lotus Spa', icon: '💆', category: 'wellness' },
+      { name: 'Fitness Center', icon: '💪', category: 'wellness' },
+    ],
+  },
+  {
+    deckNumber: 7, name: 'Promenade Deck', icon: '🚶',
+    pointsOfInterest: [
+      { name: 'Allegro Dining Room', icon: '🍷', category: 'dining' },
+      { name: 'Princess Casino', icon: '🎰', category: 'entertainment' },
+      { name: 'Boutique Shops', icon: '🛍️', category: 'services' },
+      { name: 'Photo Gallery', icon: '📸', category: 'services' },
+      { name: 'Wheelhouse Bar', icon: '🍺', category: 'dining' },
+    ],
+  },
+  {
+    deckNumber: 6, name: 'Plaza Deck', icon: '🏛️',
+    pointsOfInterest: [
+      { name: 'Grand Atrium', icon: '✨', category: 'services' },
+      { name: 'Guest Services', icon: '🛎️', category: 'services' },
+      { name: 'Princess Theater', icon: '🎭', category: 'entertainment' },
+      { name: 'Chef\'s Table', icon: '👨‍🍳', category: 'dining' },
+      { name: 'Crooners Bar', icon: '🎵', category: 'entertainment' },
+    ],
+  },
+]
+
+// ── Quick Actions (Home) ──────────────────────────────────────────────────────
+
+export const quickActions: QuickAction[] = [
+  { icon: '🍽️', label: 'Reserve Dining', badge: '3 available' },
+  { icon: '🛳️', label: 'Shore Excursions', badge: '5 ports' },
+  { icon: '💆', label: 'Spa & Wellness', badge: '20% off' },
+  { icon: '📋', label: 'Check-in', badge: 'Complete' },
+]
+
+// ── Recommendations (Home) ───────────────────────────────────────────────────
+
+export const recommendations: Recommendation[] = [
+  {
+    id: 'r1', title: 'Chef\'s Table Experience', subtitle: '$89/person · Deck 6',
+    image: '👨‍🍳', category: 'dining',
+    aiReason: 'Based on your love of Italian cuisine',
+  },
+  {
+    id: 'r2', title: 'Snorkeling at Princess Cays', subtitle: '$79/person · Day 3',
+    image: '🤿', category: 'excursion',
+    aiReason: 'Top-rated for adventurous travelers',
+  },
+  {
+    id: 'r3', title: 'Couples Spa Retreat', subtitle: '$199/couple · Lotus Spa',
+    image: '🧖', category: 'wellness',
+    aiReason: 'Gold members save $50',
+  },
+]
+
+// ── Analytics ─────────────────────────────────────────────────────────────────
+
+export const analyticsData: AnalyticsData = {
+  kpis: [
+    { label: 'NPS Score', value: '72', previousValue: '65', trend: 10.8, target: '75', icon: '⭐', unit: 'pts' },
+    { label: 'App Rating', value: '4.6', previousValue: '4.3', trend: 7.0, target: '4.7', icon: '📱', unit: '/5' },
+    { label: 'Booking Conv.', value: '34%', previousValue: '28%', trend: 21.4, target: '35%', icon: '💳' },
+    { label: 'Rev/Guest', value: '$847', previousValue: '$720', trend: 17.6, target: '$900', icon: '💰' },
+  ],
+  engagementFunnel: [
+    { stage: 'App Downloads', count: 125000, percentage: 100 },
+    { stage: 'Registrations', count: 98000, percentage: 78 },
+    { stage: 'Active Users', count: 72000, percentage: 58 },
+    { stage: 'Pre-Cruise Bookers', count: 45000, percentage: 36 },
+    { stage: 'Repeat Bookers', count: 18000, percentage: 14 },
+  ],
+  spendBreakdown: [
+    { category: 'Dining', amount: 356, percentage: 42, color: 'bg-pcl-navy' },
+    { category: 'Spa & Wellness', amount: 237, percentage: 28, color: 'bg-pcl-gold' },
+    { category: 'Excursions', amount: 169, percentage: 20, color: 'bg-blue-400' },
+    { category: 'Retail & Photo', amount: 85, percentage: 10, color: 'bg-gray-400' },
+  ],
+  dailyRevenue: [
+    { date: 'Mon', value: 42000 },
+    { date: 'Tue', value: 48000 },
+    { date: 'Wed', value: 51000 },
+    { date: 'Thu', value: 55000 },
+    { date: 'Fri', value: 62000 },
+    { date: 'Sat', value: 71000 },
+    { date: 'Sun', value: 68000 },
+  ],
+  alerts: [
+    { id: 'al1', message: 'NPS trending above target — +7 points this week', severity: 'success', time: '2 min ago' },
+    { id: 'al2', message: 'Spa booking surge on Deck 15 — consider adding slots', severity: 'info', time: '15 min ago' },
+    { id: 'al3', message: 'Check-in wait time approaching 8 min threshold', severity: 'warning', time: '1 hr ago' },
+  ],
+}
