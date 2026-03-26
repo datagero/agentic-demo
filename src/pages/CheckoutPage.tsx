@@ -1,6 +1,7 @@
 import { useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { useCart } from '../contexts/CartContext'
+import { useToast } from '../contexts/ToastContext'
 import { guest } from '../data/mock'
 import { ROUTES } from '../routes'
 
@@ -13,6 +14,7 @@ function generateOrderNumber(): string {
 export default function CheckoutPage() {
   const { items, totalPrice, clearCart } = useCart()
   const navigate = useNavigate()
+  const { showToast } = useToast()
   const [orderPlaced, setOrderPlaced] = useState(false)
   const [orderNumber] = useState(() => generateOrderNumber())
 
@@ -23,6 +25,7 @@ export default function CheckoutPage() {
   function handlePlaceOrder() {
     setOrderPlaced(true)
     clearCart()
+    showToast('Order confirmed!', 'success')
   }
 
   function handleReturnToShopping() {

@@ -1,7 +1,9 @@
 import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom'
 import { AccessibilityProvider } from './contexts/AccessibilityContext'
 import { CartProvider } from './contexts/CartContext'
+import { ToastProvider } from './contexts/ToastContext'
 import ErrorBoundary from './components/ErrorBoundary'
+import ToastStack from './components/Toast'
 import AppLayout from './layouts/AppLayout'
 import HomePage from './pages/HomePage'
 import ItineraryPage from './pages/ItineraryPage'
@@ -24,8 +26,10 @@ function Screen({ children }: { children: React.ReactNode }) {
 function App() {
   return (
     <AccessibilityProvider>
+      <ToastProvider>
       <CartProvider>
       <BrowserRouter>
+        <ToastStack />
         <Routes>
           <Route element={<AppLayout />}>
             <Route path={ROUTES.HOME} element={<Screen><HomePage /></Screen>} />
@@ -43,6 +47,7 @@ function App() {
         </Routes>
       </BrowserRouter>
       </CartProvider>
+      </ToastProvider>
     </AccessibilityProvider>
   )
 }

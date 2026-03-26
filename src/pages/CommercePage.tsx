@@ -2,6 +2,7 @@ import { useState, useEffect } from 'react'
 import { products, guest } from '../data/mock'
 import type { Product } from '../types'
 import { useCart } from '../contexts/CartContext'
+import { useToast } from '../contexts/ToastContext'
 import CartDrawer from '../components/CartDrawer'
 import { SkeletonCard } from '../components/SkeletonLoader'
 
@@ -17,6 +18,7 @@ const CATEGORY_LABELS: Record<string, string> = {
 
 function ProductCard({ product }: { product: Product }) {
   const { addItem } = useCart()
+  const { showToast } = useToast()
   const discountedPrice = product.medallionDiscount
     ? Math.round(product.price * 0.85)
     : product.price
@@ -50,7 +52,7 @@ function ProductCard({ product }: { product: Product }) {
               )}
             </div>
             <button
-              onClick={() => addItem(product)}
+              onClick={() => { addItem(product); showToast('Added to cart!', 'success') }}
               className="bg-pcl-navy text-white text-xs font-semibold px-3 py-1.5 rounded-lg active:scale-95 transition-transform"
               aria-label={`Add ${product.name} to cart`}
             >
