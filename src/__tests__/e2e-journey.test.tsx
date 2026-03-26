@@ -215,7 +215,42 @@ describe('E2E: Sarah\'s Demo Journey', () => {
     await user.click(screen.getByRole('link', { name: /home/i }))
     expect(screen.getByText('Caribbean Princess')).toBeInTheDocument()
 
-    // Full 8-screen journey complete — demo can be walked through end-to-end
+    // ── Screen 9: Voyage Rewind (via Home nav card) ──────────────────────
+    await user.click(screen.getByRole('button', { name: /Voyage Rewind/i }))
+
+    expect(screen.getByRole('heading', { name: /Your Voyage in Review/i })).toBeInTheDocument()
+    // Stats card renders
+    expect(screen.getByText('Voyage Highlights')).toBeInTheDocument()
+    expect(screen.getByText('Steps Walked')).toBeInTheDocument()
+    // Timeline shows day entries
+    expect(screen.getByText('Day-by-Day Timeline')).toBeInTheDocument()
+
+    // Navigate back to Home
+    await user.click(screen.getByRole('link', { name: /home/i }))
+
+    // ── Screen 10: Voyage Score (via Home nav card) ──────────────────────
+    await user.click(screen.getByRole('button', { name: /Voyage Score/i }))
+
+    expect(screen.getByRole('heading', { name: /Voyage Score/i })).toBeInTheDocument()
+    // Score displays (may appear in multiple places: score circle + leaderboard)
+    expect(screen.getAllByText('720').length).toBeGreaterThan(0)
+    // Badges section renders
+    expect(screen.getByText('Your Badges')).toBeInTheDocument()
+
+    // Navigate back to Home
+    await user.click(screen.getByRole('link', { name: /home/i }))
+
+    // ── Screen 11: Family Hub (via Home nav card) ────────────────────────
+    await user.click(screen.getByRole('button', { name: /Family Hub/i }))
+
+    expect(screen.getByRole('heading', { name: /Family Hub/i })).toBeInTheDocument()
+    // Family member cards render
+    expect(screen.getByText('Family Members')).toBeInTheDocument()
+    expect(screen.getAllByText('Sarah').length).toBeGreaterThan(0)
+    expect(screen.getAllByText('James').length).toBeGreaterThan(0)
+    expect(screen.getAllByText('Emma').length).toBeGreaterThan(0)
+
+    // Full 11-screen journey complete — demo can be walked through end-to-end
   })
 
   it('maintains consistent branding across all screens', async () => {

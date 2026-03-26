@@ -248,6 +248,51 @@ export default function HomePage() {
         </div>
       </div>
 
+      {/* Post-Cruise / Your Voyage section */}
+      <div className="px-4 mt-4">
+        <p className="section-label px-0">Explore More</p>
+        <div className="space-y-2">
+          <button
+            className="card w-full p-4 flex items-center gap-3 text-left hover:shadow-md transition-shadow cursor-pointer"
+            onClick={() => navigate(ROUTES.VOYAGE_REWIND)}
+            aria-label="Voyage Rewind"
+          >
+            <span className="text-2xl shrink-0" aria-hidden="true">📸</span>
+            <div className="flex-1 min-w-0">
+              <p className="font-semibold text-sm text-pcl-text">Voyage Rewind</p>
+              <p className="text-xs text-gray-400 mt-0.5">Your trip memories</p>
+            </div>
+            <span className="text-gray-300 text-lg" aria-hidden="true">›</span>
+          </button>
+
+          <button
+            className="card w-full p-4 flex items-center gap-3 text-left hover:shadow-md transition-shadow cursor-pointer"
+            onClick={() => navigate(ROUTES.VOYAGE_SCORE)}
+            aria-label="Voyage Score"
+          >
+            <span className="text-2xl shrink-0" aria-hidden="true">🏆</span>
+            <div className="flex-1 min-w-0">
+              <p className="font-semibold text-sm text-pcl-text">Voyage Score</p>
+              <p className="text-xs text-gray-400 mt-0.5">720 pts — 2 badges to go</p>
+            </div>
+            <span className="text-gray-300 text-lg" aria-hidden="true">›</span>
+          </button>
+
+          <button
+            className="card w-full p-4 flex items-center gap-3 text-left hover:shadow-md transition-shadow cursor-pointer"
+            onClick={() => navigate(ROUTES.FAMILY)}
+            aria-label="Family Hub"
+          >
+            <span className="text-2xl shrink-0" aria-hidden="true">👨‍👩‍👧‍👦</span>
+            <div className="flex-1 min-w-0">
+              <p className="font-semibold text-sm text-pcl-text">Family Hub</p>
+              <p className="text-xs text-gray-400 mt-0.5">4 members tracked</p>
+            </div>
+            <span className="text-gray-300 text-lg" aria-hidden="true">›</span>
+          </button>
+        </div>
+      </div>
+
       {/* Voyage summary */}
       <div className="px-4 mt-4 pb-6">
         <p className="section-label px-0">Voyage Details</p>
