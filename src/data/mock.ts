@@ -2,7 +2,8 @@ import type {
   Guest, Voyage, PortStop, ItineraryDay, Product,
   ShipDeck, AnalyticsData, QuickAction, Recommendation,
   ContentItem, NotificationDraft, JourneyAnalyticsData,
-  CheckInStep, CompanionProfile,
+  CheckInStep, CompanionProfile, MedallionMoment, VoyageRewindData,
+  VoyageScoreData, FamilyHubData,
 } from '../types'
 
 // ── Guest Profile ─────────────────────────────────────────────────────────────
@@ -79,6 +80,59 @@ export const itineraryDays: ItineraryDay[] = [
       { id: 'c5', time: '5:00 PM', title: 'Return to Ship', location: 'Tender Platform', category: 'social', aiRecommended: false, medallionPersonalized: false },
     ],
   },
+  {
+    day: 4, date: 'Apr 10', port: 'San Juan, Puerto Rico', isSeaDay: false,
+    weather: { temp: 88, condition: 'Sunny', icon: '☀️' },
+    activities: [
+      { id: 'd1', time: '7:30 AM', title: 'Old San Juan Walking Tour', location: 'Pier Gate', category: 'excursion', aiRecommended: true, medallionPersonalized: false, description: 'UNESCO World Heritage site — rated 4.6 stars' },
+      { id: 'd2', time: '10:00 AM', title: 'El Morro Fortress Visit', location: 'Castillo San Felipe del Morro', category: 'excursion', aiRecommended: true, medallionPersonalized: true, description: 'Recommended based on your interest in history' },
+      { id: 'd3', time: '12:30 PM', title: 'Local Cuisine Lunch', location: 'La Mallorca, Old San Juan', category: 'dining', aiRecommended: true, medallionPersonalized: false, description: 'Award-winning Puerto Rican cuisine' },
+      { id: 'd4', time: '3:00 PM', title: 'Condado Beach Relax', location: 'Condado Beach', category: 'wellness', aiRecommended: false, medallionPersonalized: false },
+      { id: 'd5', time: '5:30 PM', title: 'Return to Ship & Sail Away', location: 'Pier 4, San Juan', category: 'social', aiRecommended: false, medallionPersonalized: false },
+    ],
+  },
+  {
+    day: 5, date: 'Apr 11', port: 'St. Thomas, USVI', isSeaDay: false,
+    weather: { temp: 85, condition: 'Partly Cloudy', icon: '⛅' },
+    activities: [
+      { id: 'e1', time: '8:00 AM', title: 'Coral World Ocean Park', location: 'Coral World, Estate Caret Bay', category: 'excursion', aiRecommended: false, medallionPersonalized: false },
+      { id: 'e2', time: '9:30 AM', title: 'Trunk Bay Snorkel Tour', location: 'Trunk Bay, St. John', category: 'excursion', aiRecommended: true, medallionPersonalized: true, description: 'One of the top 10 beaches in the world' },
+      { id: 'e3', time: '12:00 PM', title: 'Charlotte Amalie Shopping', location: 'Main Street, Charlotte Amalie', category: 'social', aiRecommended: false, medallionPersonalized: false, description: 'Duty-free jewelry, electronics and rum' },
+      { id: 'e4', time: '2:30 PM', title: 'Magens Bay Beach Afternoon', location: 'Magens Bay', category: 'wellness', aiRecommended: true, medallionPersonalized: false, description: 'Pristine white sand beach — top-rated by guests' },
+      { id: 'e5', time: '4:30 PM', title: 'Return to Ship', location: 'Crown Bay Pier', category: 'social', aiRecommended: false, medallionPersonalized: false },
+    ],
+  },
+  {
+    day: 6, date: 'Apr 12', port: 'At Sea', isSeaDay: true,
+    weather: { temp: 83, condition: 'Sunny', icon: '☀️' },
+    activities: [
+      { id: 'f1', time: '7:00 AM', title: 'Morning Stretch & Yoga', location: 'Sun Deck', category: 'wellness', aiRecommended: true, medallionPersonalized: true, description: 'Recommended based on your wellness profile' },
+      { id: 'f2', time: '10:00 AM', title: 'Trivia Challenge', location: 'Wheelhouse Bar', category: 'entertainment', aiRecommended: false, medallionPersonalized: false },
+      { id: 'f3', time: '12:00 PM', title: 'Pool Deck Lunch', location: 'Trident Grill, Lido Deck', category: 'dining', aiRecommended: false, medallionPersonalized: false },
+      { id: 'f4', time: '2:00 PM', title: 'Afternoon Spa Treatment', location: 'Lotus Spa, Deck 15', category: 'wellness', aiRecommended: true, medallionPersonalized: true, description: 'Gold members: complimentary aromatherapy add-on' },
+      { id: 'f5', time: '8:30 PM', title: 'Farewell Variety Show', location: 'Princess Theater', category: 'entertainment', aiRecommended: false, medallionPersonalized: false },
+    ],
+  },
+  {
+    day: 7, date: 'Apr 13', port: 'At Sea', isSeaDay: true,
+    weather: { temp: 81, condition: 'Partly Cloudy', icon: '⛅' },
+    activities: [
+      { id: 'g1', time: '8:00 AM', title: 'Captain\'s Farewell Breakfast', location: 'Allegro Dining Room', category: 'dining', aiRecommended: true, medallionPersonalized: true, description: 'Exclusive breakfast with the Captain for Gold members' },
+      { id: 'g2', time: '10:30 AM', title: 'Art Auction Preview', location: 'Grand Atrium, Deck 6', category: 'entertainment', aiRecommended: false, medallionPersonalized: false },
+      { id: 'g3', time: '1:00 PM', title: 'Poolside BBQ', location: 'Sky Pool Deck', category: 'dining', aiRecommended: false, medallionPersonalized: false },
+      { id: 'g4', time: '3:00 PM', title: 'Packing & Disembarkation Prep', location: 'Cabin D412', category: 'social', aiRecommended: false, medallionPersonalized: false, description: 'Luggage must be outside cabin by 11 PM' },
+      { id: 'g5', time: '7:00 PM', title: 'Farewell Dinner', location: 'Sabatini\'s Italian Trattoria', category: 'dining', aiRecommended: true, medallionPersonalized: true, description: 'Based on your preference for Italian cuisine' },
+    ],
+  },
+  {
+    day: 8, date: 'Apr 14', port: 'Fort Lauderdale, FL', isSeaDay: false,
+    weather: { temp: 80, condition: 'Sunny', icon: '☀️' },
+    activities: [
+      { id: 'h1', time: '6:30 AM', title: 'Early Disembarkation Breakfast', location: 'Horizon Court', category: 'dining', aiRecommended: false, medallionPersonalized: false },
+      { id: 'h2', time: '7:30 AM', title: 'Self-Assist Disembarkation', location: 'Deck 3 Exit', category: 'social', aiRecommended: false, medallionPersonalized: false, description: 'Carry your own luggage for earliest departure' },
+      { id: 'h3', time: '9:00 AM', title: 'Standard Disembarkation', location: 'Terminal 2', category: 'social', aiRecommended: false, medallionPersonalized: false },
+    ],
+  },
 ]
 
 // ── Products ──────────────────────────────────────────────────────────────────
@@ -148,10 +202,10 @@ export const shipDecks: ShipDeck[] = [
 // ── Quick Actions (Home) ──────────────────────────────────────────────────────
 
 export const quickActions: QuickAction[] = [
-  { icon: '🍽️', label: 'Reserve Dining', badge: '3 available' },
-  { icon: '🛳️', label: 'Shore Excursions', badge: '5 ports' },
-  { icon: '💆', label: 'Spa & Wellness', badge: '20% off' },
-  { icon: '📋', label: 'Check-in', badge: 'Complete' },
+  { icon: '🍽️', label: 'Reserve Dining', badge: '3 available', route: '/commerce' },
+  { icon: '🛳️', label: 'Shore Excursions', badge: '5 ports', route: '/itinerary' },
+  { icon: '💆', label: 'Spa & Wellness', badge: '20% off', route: '/commerce' },
+  { icon: '📋', label: 'Check-in', badge: 'Complete', route: '/checkin' },
 ]
 
 // ── Recommendations (Home) ───────────────────────────────────────────────────
@@ -161,22 +215,25 @@ export const recommendations: Recommendation[] = [
     id: 'r1', title: 'Chef\'s Table Experience', subtitle: '$89/person · Deck 6',
     image: '👨‍🍳', category: 'dining',
     aiReason: 'Based on your love of Italian cuisine',
+    route: '/commerce',
   },
   {
     id: 'r2', title: 'Snorkeling at Princess Cays', subtitle: '$79/person · Day 3',
     image: '🤿', category: 'excursion',
     aiReason: 'Top-rated for adventurous travelers',
+    route: '/itinerary',
   },
   {
     id: 'r3', title: 'Couples Spa Retreat', subtitle: '$199/couple · Lotus Spa',
     image: '🧖', category: 'wellness',
     aiReason: 'Gold members save $50',
+    route: '/commerce',
   },
 ]
 
 // ── Analytics ─────────────────────────────────────────────────────────────────
 
-export const analyticsData: AnalyticsData = {
+export const analyticsData7d: AnalyticsData = {
   kpis: [
     { label: 'NPS Score', value: '72', previousValue: '65', trend: 10.8, target: '75', icon: '⭐', unit: 'pts' },
     { label: 'App Rating', value: '4.6', previousValue: '4.3', trend: 7.0, target: '4.7', icon: '📱', unit: '/5' },
@@ -210,6 +267,46 @@ export const analyticsData: AnalyticsData = {
     { id: 'al2', message: 'Spa booking surge on Deck 15 — consider adding slots', severity: 'info', time: '15 min ago' },
     { id: 'al3', message: 'Check-in wait time approaching 8 min threshold', severity: 'warning', time: '1 hr ago' },
   ],
+}
+
+export const analyticsData30d: AnalyticsData = {
+  kpis: [
+    { label: 'NPS Score', value: '74', previousValue: '68', trend: 8.8, target: '75', icon: '⭐', unit: 'pts' },
+    { label: 'App Rating', value: '4.7', previousValue: '4.4', trend: 6.8, target: '4.8', icon: '📱', unit: '/5' },
+    { label: 'Booking Conv.', value: '38%', previousValue: '31%', trend: 22.6, target: '40%', icon: '💳' },
+    { label: 'Rev/Guest', value: '$1,124', previousValue: '$940', trend: 19.6, target: '$1,200', icon: '💰' },
+  ],
+  engagementFunnel: [
+    { stage: 'App Downloads', count: 520000, percentage: 100 },
+    { stage: 'Registrations', count: 412000, percentage: 79 },
+    { stage: 'Active Users', count: 308000, percentage: 59 },
+    { stage: 'Pre-Cruise Bookers', count: 195000, percentage: 38 },
+    { stage: 'Repeat Bookers', count: 82000, percentage: 16 },
+  ],
+  spendBreakdown: [
+    { category: 'Dining', amount: 478, percentage: 43, color: 'bg-pcl-navy' },
+    { category: 'Spa & Wellness', amount: 312, percentage: 28, color: 'bg-pcl-gold' },
+    { category: 'Excursions', amount: 223, percentage: 20, color: 'bg-blue-400' },
+    { category: 'Retail & Photo', amount: 111, percentage: 10, color: 'bg-gray-400' },
+  ],
+  dailyRevenue: [
+    { date: 'W1', value: 168000 },
+    { date: 'W2', value: 185000 },
+    { date: 'W3', value: 201000 },
+    { date: 'W4', value: 224000 },
+  ],
+  alerts: [
+    { id: 'al4', message: 'Monthly NPS record broken — 74 pts, highest in 2 years', severity: 'success', time: '1 hr ago' },
+    { id: 'al5', message: 'Excursion bookings up 31% vs prior 30-day period', severity: 'info', time: '3 hrs ago' },
+    { id: 'al6', message: 'Post-cruise survey completion below 20% — review CTA', severity: 'warning', time: '6 hrs ago' },
+  ],
+}
+
+/** Backwards-compatible alias — resolves to the 7-day dataset. */
+export const analyticsData = analyticsData7d
+
+export function getAnalyticsData(period: '7d' | '30d'): AnalyticsData {
+  return period === '30d' ? analyticsData30d : analyticsData7d
 }
 
 // ── CMS Content Items ─────────────────────────────────────────────────────────
@@ -272,3 +369,335 @@ export const companions: CompanionProfile[] = [
   { name: 'James Mitchell', initials: 'JM', relation: 'Spouse', completionPct: 80, currentStep: 'Emergency Contact' },
   { name: 'Emma Mitchell', initials: 'EM', relation: 'Child (14)', completionPct: 40, currentStep: 'Health Screening' },
 ]
+
+// ── Medallion Moments ─────────────────────────────────────────────────────────
+
+export const medallionMoments: MedallionMoment[] = [
+  {
+    id: 'moment-1',
+    type: 'spa',
+    title: 'Your preferred therapist has a cancellation',
+    detail: 'Deep tissue massage at 3:00 PM — only 1 min walk',
+    location: 'Deck 7, near Lotus Spa',
+    timeContext: 'Available now',
+    cta: { label: 'Book Now', action: 'book-spa' },
+    reason: 'Based on your location (Deck 7) and your spa booking from Day 2',
+    icon: '💆',
+    priority: 'high'
+  },
+  {
+    id: 'moment-2',
+    type: 'dining',
+    title: 'Crown Grill has a table right now',
+    detail: 'No wait — walk-in available for 2 guests',
+    location: 'Deck 6, Crown Grill',
+    timeContext: '3 min walk',
+    cta: { label: 'Reserve Table', action: 'reserve-dining' },
+    reason: 'Based on dinner time (6:30 PM) and your preference for Crown Grill from Day 1',
+    icon: '🍽️',
+    priority: 'high'
+  },
+  {
+    id: 'moment-3',
+    type: 'family',
+    title: 'Emma just arrived at Adventure Ocean',
+    detail: 'Checked in at Kids Club — supervised activities until 9 PM',
+    location: 'Deck 15, Adventure Ocean',
+    timeContext: 'Just now',
+    cta: { label: 'View Location', action: 'view-family' },
+    reason: 'Based on Emma\'s Medallion location update (Deck 15)',
+    icon: '👧',
+    priority: 'medium'
+  },
+  {
+    id: 'moment-4',
+    type: 'sunset',
+    title: 'Tonight\'s sunset at 6:47 PM',
+    detail: 'Best view from Deck 16 aft — 2 min walk from you',
+    location: 'Deck 16, Aft Observation',
+    timeContext: 'In 45 min',
+    cta: { label: 'Set Reminder', action: 'set-reminder' },
+    reason: 'Based on your location (Deck 14) and sunset time from ship navigation data',
+    icon: '🌅',
+    priority: 'medium'
+  },
+  {
+    id: 'moment-5',
+    type: 'weather',
+    title: 'Rain expected in Cozumel at 2 PM',
+    detail: '3 indoor alternatives: San Gervasio ruins (covered), Museo de la Isla, Cacao Factory tour',
+    location: 'Cozumel, Mexico',
+    timeContext: 'In 2 hours',
+    cta: { label: 'View Alternatives', action: 'view-alternatives' },
+    reason: 'Based on weather forecast for your current port and your excursion booking at 1 PM',
+    icon: '🌧️',
+    priority: 'high'
+  },
+  {
+    id: 'moment-6',
+    type: 'dining',
+    title: 'Your usual — Aperol Spritz?',
+    detail: 'One-tap order to your current location',
+    location: 'Deck 15, Pool Bar',
+    timeContext: 'Right now',
+    cta: { label: 'Order Now', action: 'order-drink' },
+    reason: 'Based on your location (Pool Bar) and your beverage history (3 Aperol Spritz this voyage)',
+    icon: '🍹',
+    priority: 'low'
+  }
+]
+
+// ── Voyage Rewind ─────────────────────────────────────────────────────────────
+
+export const voyageRewindData: VoyageRewindData = {
+  stats: [
+    { label: 'Steps Walked', value: '52,000', icon: '👟' },
+    { label: 'Restaurants', value: '6', icon: '🍽️' },
+    { label: 'Sunsets', value: '4', icon: '🌅' },
+    { label: 'Ports Visited', value: '8', icon: '⚓' },
+  ],
+  dayHighlights: [
+    {
+      day: 1,
+      port: 'Fort Lauderdale, FL',
+      highlights: ['Embarkation & Welcome', 'Sail Away Party on Lido Deck', 'Welcome Dinner at Allegro'],
+      medallionData: 'Cabin D412 unlocked · Medallion wallet activated',
+    },
+    {
+      day: 2,
+      port: 'At Sea',
+      highlights: ['Sunrise Yoga on Sun Deck', 'Lotus Spa deep tissue massage', 'Chef\'s Table 8-course dinner'],
+      medallionData: 'Spa booking auto-confirmed · Gold upgrade applied',
+    },
+    {
+      day: 3,
+      port: 'Princess Cays, Bahamas',
+      highlights: ['Snorkeling Adventure (4.8★)', 'Beach BBQ Lunch', 'Kayak Tour in turquoise waters'],
+      medallionData: 'Tender priority boarding · 2 excursions tracked',
+    },
+    {
+      day: 4,
+      port: 'San Juan, Puerto Rico',
+      highlights: ['Old San Juan Walking Tour', 'El Morro Fortress Visit', 'Local Cuisine at La Mallorca'],
+      medallionData: 'History interest tag matched · 3 AI recommendations used',
+    },
+    {
+      day: 5,
+      port: 'St. Thomas, USVI',
+      highlights: ['Trunk Bay Snorkel Tour', 'Charlotte Amalie Duty-Free Shopping', 'Magens Bay beach afternoon'],
+      medallionData: 'Top 10 beach achieved · Shopping preferences logged',
+    },
+    {
+      day: 6,
+      port: 'At Sea',
+      highlights: ['Morning Stretch & Yoga', 'Trivia Challenge at Wheelhouse Bar', 'Farewell Variety Show'],
+      medallionData: 'Wellness streak: 3 days · Gold aromatherapy add-on applied',
+    },
+    {
+      day: 7,
+      port: 'At Sea',
+      highlights: ['Captain\'s Farewell Breakfast', 'Art Auction Preview', 'Farewell Dinner at Sabatini\'s'],
+      medallionData: 'Captain\'s Circle exclusive breakfast · Gold member perk used',
+    },
+    {
+      day: 8,
+      port: 'Fort Lauderdale, FL',
+      highlights: ['Early Disembarkation Breakfast', 'Self-Assist Disembarkation', 'Safe travels home'],
+      medallionData: 'Smooth disembarkation · Voyage memories saved',
+    },
+  ],
+  voyageCard: {
+    guestName: 'Sarah Mitchell',
+    tier: 'Gold',
+    voyageName: 'Eastern Caribbean — Caribbean Princess',
+    dates: 'Apr 7 – Apr 14, 2025',
+    statsLine: '7 nights · 4 ports · 52,000 steps · 6 restaurants',
+    favoritePort: 'Princess Cays, Bahamas',
+  },
+  nextSailing: {
+    name: 'Mediterranean Discovery — Royal Princess',
+    dates: 'Sep 12 – Sep 26, 2025',
+    favoritePorts: ['Santorini, Greece', 'Dubrovnik, Croatia', 'Amalfi Coast, Italy'],
+    cabin: 'Balcony Suite available on Deck 10',
+    price: '$2,899/person',
+    discount: '15% Gold member discount applied',
+  },
+}
+
+// ── Voyage Score Gamification ─────────────────────────────────────────────────
+
+export const voyageScoreData: VoyageScoreData = {
+  score: 720,
+  maxScore: 1000,
+  badges: [
+    {
+      id: 'first-sunrise',
+      name: 'First Sunrise',
+      description: 'On deck before 7am',
+      icon: '🌅',
+      unlocked: true,
+    },
+    {
+      id: 'deck-explorer',
+      name: 'Deck Explorer',
+      description: 'Visited 15 of 18 decks',
+      icon: '🚢',
+      unlocked: true,
+      progress: '15/18',
+    },
+    {
+      id: 'foodie',
+      name: 'Foodie',
+      description: 'Dined at 5+ restaurants',
+      icon: '🍽️',
+      unlocked: true,
+    },
+    {
+      id: 'social-butterfly',
+      name: 'Social Butterfly',
+      description: 'Attend 3+ group activities',
+      icon: '🦋',
+      unlocked: false,
+      progress: '1/3',
+    },
+    {
+      id: 'sunset-chaser',
+      name: 'Sunset Chaser',
+      description: 'Watched 4 sunsets',
+      icon: '🌇',
+      unlocked: true,
+    },
+    {
+      id: 'adventure-seeker',
+      name: 'Adventure Seeker',
+      description: 'Book 3+ excursions',
+      icon: '🏄',
+      unlocked: false,
+      progress: '2/3',
+    },
+  ],
+  rewardTiers: [
+    { points: 250, reward: 'Free specialty coffee', icon: '☕', unlocked: true },
+    { points: 500, reward: 'Priority restaurant seating', icon: '🪑', unlocked: true },
+    { points: 750, reward: 'Complimentary spa treatment', icon: '💆', unlocked: false },
+    { points: 1000, reward: 'Voyage Champion pin', icon: '🏆', unlocked: false },
+  ],
+  leaderboard: [
+    { rank: 45, name: 'James T.', score: 841 },
+    { rank: 46, name: 'Maria L.', score: 798 },
+    { rank: 47, name: 'Sarah M.', score: 720, isYou: true },
+    { rank: 48, name: 'David K.', score: 703 },
+    { rank: 49, name: 'Priya N.', score: 688 },
+  ],
+  shipRank: 47,
+  totalGuests: 3200,
+}
+
+// ── Family Hub ────────────────────────────────────────────────────────────────
+
+export const familyHubData: FamilyHubData = {
+  members: [
+    {
+      id: 'sarah',
+      name: 'Sarah',
+      initials: 'S',
+      relation: 'You',
+      deck: 7,
+      location: 'Stateroom B420',
+      activity: 'In cabin',
+      lastSeen: 'Now',
+      avatarColor: 'bg-pcl-gold',
+    },
+    {
+      id: 'james',
+      name: 'James',
+      initials: 'J',
+      relation: 'Husband',
+      deck: 15,
+      location: 'Main Pool',
+      activity: 'Swimming',
+      lastSeen: '5 min ago',
+      avatarColor: 'bg-blue-500',
+    },
+    {
+      id: 'emma',
+      name: 'Emma',
+      initials: 'E',
+      relation: 'Daughter',
+      deck: 12,
+      location: 'Adventure Ocean',
+      activity: 'Kids Club (supervised)',
+      lastSeen: 'Checked in 2pm',
+      avatarColor: 'bg-pink-500',
+    },
+    {
+      id: 'margaret',
+      name: 'Margaret',
+      initials: 'M',
+      relation: 'Mother',
+      deck: 6,
+      location: 'Crown Grill',
+      activity: 'Dining',
+      lastSeen: '10 min ago',
+      avatarColor: 'bg-purple-500',
+    },
+  ],
+  activities: [
+    {
+      id: 'dinner-crown',
+      name: 'Dinner at Crown Grill',
+      time: 'Tonight 7pm',
+      location: 'Crown Grill, Deck 6',
+      confirmed: ['Sarah', 'James', 'Margaret'],
+      pending: ['Emma'],
+    },
+    {
+      id: 'snorkeling-cozumel',
+      name: 'Snorkeling at Cozumel',
+      time: 'Tomorrow 10am',
+      location: 'Cozumel, Mexico',
+      confirmed: ['Sarah', 'James'],
+      pending: ['Emma', 'Margaret'],
+    },
+  ],
+  spending: [
+    {
+      memberId: 'sarah',
+      name: 'Sarah',
+      total: 342,
+      categories: [
+        { name: 'Dining', amount: 180 },
+        { name: 'Spa', amount: 120 },
+        { name: 'Excursions', amount: 42 },
+      ],
+    },
+    {
+      memberId: 'james',
+      name: 'James',
+      total: 156,
+      categories: [
+        { name: 'Beverages', amount: 89 },
+        { name: 'Retail', amount: 67 },
+      ],
+    },
+    {
+      memberId: 'emma',
+      name: 'Emma',
+      total: 28,
+      categories: [
+        { name: 'Kids Activities', amount: 28 },
+      ],
+    },
+    {
+      memberId: 'margaret',
+      name: 'Margaret',
+      total: 215,
+      categories: [
+        { name: 'Spa', amount: 150 },
+        { name: 'Dining', amount: 65 },
+      ],
+    },
+  ],
+  familyTotal: 741,
+  dailyBudgetAvg: 185,
+}

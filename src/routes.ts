@@ -9,4 +9,8 @@ export const ROUTES = {
   CMS: '/cms',
   JOURNEY: '/journey',
   CHECKIN: '/checkin',
+  CHECKOUT: '/checkout',
+  VOYAGE_REWIND: '/voyage-rewind',
+  VOYAGE_SCORE: '/voyage-score',
+  FAMILY: '/family',
 } as const

@@ -103,6 +103,7 @@ export interface QuickAction {
   icon: string
   label: string
   badge?: string
+  route: string
 }
 
 export interface Recommendation {
@@ -112,6 +113,7 @@ export interface Recommendation {
   image: string // emoji
   category: string
   aiReason: string
+  route: string
 }
 
 // ── CMS & Notifications (Screen 6) ───────────────────────────────────────────
@@ -150,6 +152,61 @@ export interface JourneyAnalyticsData {
   conversionDrivers: { driver: string; impact: string; direction: 'up' | 'down' }[]
 }
 
+// ── Medallion Moments (Screen 9) ──────────────────────────────────────────────
+
+export type MomentType = 'dining' | 'spa' | 'activity' | 'family' | 'weather' | 'sunset'
+
+export interface MedallionMoment {
+  id: string
+  type: MomentType
+  title: string
+  detail: string
+  location: string
+  timeContext: string
+  cta: { label: string; action: string }
+  reason: string
+  icon: string
+  priority: 'high' | 'medium' | 'low'
+}
+
+// ── Family Hub (Stories #59 & #60) ───────────────────────────────────────────
+
+export interface FamilyMember {
+  id: string
+  name: string
+  initials: string
+  relation: string
+  deck: number
+  location: string
+  activity: string
+  lastSeen: string
+  avatarColor: string
+}
+
+export interface FamilyActivity {
+  id: string
+  name: string
+  time: string
+  location: string
+  confirmed: string[]
+  pending: string[]
+}
+
+export interface FamilySpend {
+  memberId: string
+  name: string
+  total: number
+  categories: { name: string; amount: number }[]
+}
+
+export interface FamilyHubData {
+  members: FamilyMember[]
+  activities: FamilyActivity[]
+  spending: FamilySpend[]
+  dailyBudgetAvg: number
+  familyTotal: number
+}
+
 // ── OceanReady Check-In (Screen 8) ───────────────────────────────────────────
 
 export interface CheckInStep {
@@ -166,4 +223,69 @@ export interface CompanionProfile {
   relation: string
   completionPct: number
   currentStep: string
+}
+
+// ── Voyage Score Gamification ─────────────────────────────────────────────────
+
+export interface VoyageBadge {
+  id: string
+  name: string
+  description: string
+  icon: string
+  unlocked: boolean
+  progress?: string // e.g. "15/18 decks"
+}
+
+export interface RewardTier {
+  points: number
+  reward: string
+  icon: string
+  unlocked: boolean
+}
+
+export interface LeaderboardEntry {
+  rank: number
+  name: string
+  score: number
+  isYou?: boolean
+}
+
+export interface VoyageScoreData {
+  score: number
+  maxScore: number
+  badges: VoyageBadge[]
+  rewardTiers: RewardTier[]
+  leaderboard: LeaderboardEntry[]
+  shipRank: number
+  totalGuests: number
+}
+
+// ── Voyage Rewind (Post-Cruise Memory) ───────────────────────────────────────
+
+export interface DayHighlight {
+  day: number
+  port: string
+  highlights: string[]
+  medallionData: string
+}
+
+export interface VoyageRewindData {
+  stats: { label: string; value: string; icon: string }[]
+  dayHighlights: DayHighlight[]
+  voyageCard: {
+    guestName: string
+    tier: string
+    voyageName: string
+    dates: string
+    statsLine: string
+    favoritePort: string
+  }
+  nextSailing: {
+    name: string
+    dates: string
+    favoritePorts: string[]
+    cabin: string
+    price: string
+    discount: string
+  }
 }

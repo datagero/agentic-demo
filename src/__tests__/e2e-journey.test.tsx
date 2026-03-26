@@ -21,6 +21,16 @@ describe('E2E: Sarah\'s Demo Journey', () => {
     expect(screen.getByText(/Gold Medallion Member/)).toBeInTheDocument()
     expect(screen.getByText('AI')).toBeInTheDocument()
 
+    // Verify quick action buttons are present and interactive
+    const reserveDiningBtn = screen.getByRole('button', { name: /Reserve Dining/i })
+    const shoreExcursionsBtn = screen.getByRole('button', { name: /Shore Excursions/i })
+    expect(reserveDiningBtn).toHaveAttribute('aria-label')
+    expect(shoreExcursionsBtn).toHaveAttribute('aria-label')
+
+    // Verify recommendation cards are present (rendered as buttons)
+    expect(screen.getByRole('button', { name: /Chef's Table Experience/i })).toBeInTheDocument()
+    expect(screen.getByRole('button', { name: /Snorkeling at Princess Cays/i })).toBeInTheDocument()
+
     // Verify recommendations are loaded
     expect(screen.getByText("Chef's Table Experience")).toBeInTheDocument()
     expect(screen.getByText('Based on your love of Italian cuisine')).toBeInTheDocument()
@@ -30,7 +40,9 @@ describe('E2E: Sarah\'s Demo Journey', () => {
 
     // Verify CheckIn page content
     expect(screen.getByRole('heading', { name: /oceanready/i })).toBeInTheDocument()
-    expect(screen.getByRole('progressbar')).toBeInTheDocument()
+    const progressBar = screen.getByRole('progressbar')
+    expect(progressBar).toBeInTheDocument()
+    expect(progressBar).toHaveAttribute('aria-valuenow', '60')
     expect(screen.getByText(/3 of 5 steps complete/)).toBeInTheDocument()
 
     // Verify AI Assisted badges
@@ -40,6 +52,13 @@ describe('E2E: Sarah\'s Demo Journey', () => {
     // Verify companion names
     expect(screen.getByText('James Mitchell')).toBeInTheDocument()
     expect(screen.getByText('Emma Mitchell')).toBeInTheDocument()
+
+    // Verify Continue button advances to next step (60% → 80%)
+    const continueBtn = screen.getByRole('button', { name: /continue/i })
+    expect(continueBtn).toBeInTheDocument()
+    await user.click(continueBtn)
+    const updatedProgressBar = screen.getByRole('progressbar')
+    expect(updatedProgressBar).toHaveAttribute('aria-valuenow', '80')
 
     // Navigate back to Home
     await user.click(screen.getByRole('button', { name: /back to home/i }))
@@ -69,9 +88,9 @@ describe('E2E: Sarah\'s Demo Journey', () => {
     expect(screen.getByRole('heading', { name: /shop & book/i })).toBeInTheDocument()
     expect(screen.getByText(/early bird special/i)).toBeInTheDocument()
 
-    // Filter by dining
+    // Filter by dining — wait for skeleton to resolve first
     await user.click(screen.getByText('Dining'))
-    expect(screen.getByText("Sabatini's Italian Trattoria")).toBeInTheDocument()
+    expect(await screen.findByText("Sabatini's Italian Trattoria")).toBeInTheDocument()
     expect(screen.getByText('Crown Grill Steakhouse')).toBeInTheDocument()
 
     // Verify Medallion pricing
@@ -80,6 +99,29 @@ describe('E2E: Sarah\'s Demo Journey', () => {
 
     // Go back to all products
     await user.click(screen.getByText('All'))
+
+    // ── Cart flow ─────────────────────────────────────────────────────────
+    // Click the Add button for the first product (Sabatini's Italian Trattoria)
+    const addBtn = screen.getByRole('button', { name: /Add Sabatini's Italian Trattoria to cart/i })
+    await user.click(addBtn)
+
+    // Cart count badge on the View Cart button should update to 1
+    expect(screen.getByRole('button', { name: /View cart with 1 items/i })).toBeInTheDocument()
+
+    // Open the cart drawer
+    await user.click(screen.getByRole('button', { name: /View cart with 1 items/i }))
+
+    // Verify CartDrawer is open with correct ARIA attributes
+    const cartDialog = screen.getByRole('dialog', { name: /Shopping cart/i })
+    expect(cartDialog).toBeInTheDocument()
+
+    // Verify item name and price appear in the drawer
+    within(cartDialog).getByText("Sabatini's Italian Trattoria")
+    const priceInstances = within(cartDialog).getAllByText(/\$29/)
+    expect(priceInstances.length).toBeGreaterThan(0)
+
+    // Close the drawer
+    await user.click(within(cartDialog).getByRole('button', { name: /Close cart/i }))
 
     // ── Navigate to Navigator ─────────────────────────────────────────────
     await user.click(screen.getByRole('link', { name: /navigator/i }))
@@ -108,8 +150,8 @@ describe('E2E: Sarah\'s Demo Journey', () => {
     expect(screen.getByRole('heading', { name: /analytics/i })).toBeInTheDocument()
     expect(screen.getByText('Stakeholder View')).toBeInTheDocument()
 
-    // Verify all 4 KPIs
-    expect(screen.getByText('NPS Score')).toBeInTheDocument()
+    // Verify all 4 KPIs — wait for loading state to resolve
+    expect(await screen.findByText('NPS Score')).toBeInTheDocument()
     expect(screen.getByText('72')).toBeInTheDocument()
     expect(screen.getByText('App Rating')).toBeInTheDocument()
     expect(screen.getByText('Booking Conv.')).toBeInTheDocument()
@@ -173,7 +215,42 @@ describe('E2E: Sarah\'s Demo Journey', () => {
     await user.click(screen.getByRole('link', { name: /home/i }))
     expect(screen.getByText('Caribbean Princess')).toBeInTheDocument()
 
-    // Full 8-screen journey complete — demo can be walked through end-to-end
+    // ── Screen 9: Voyage Rewind (via Home nav card) ──────────────────────
+    await user.click(screen.getByRole('button', { name: /Voyage Rewind/i }))
+
+    expect(screen.getByRole('heading', { name: /Your Voyage in Review/i })).toBeInTheDocument()
+    // Stats card renders
+    expect(screen.getByText('Voyage Highlights')).toBeInTheDocument()
+    expect(screen.getByText('Steps Walked')).toBeInTheDocument()
+    // Timeline shows day entries
+    expect(screen.getByText('Day-by-Day Timeline')).toBeInTheDocument()
+
+    // Navigate back to Home
+    await user.click(screen.getByRole('link', { name: /home/i }))
+
+    // ── Screen 10: Voyage Score (via Home nav card) ──────────────────────
+    await user.click(screen.getByRole('button', { name: /Voyage Score/i }))
+
+    expect(screen.getByRole('heading', { name: /Voyage Score/i })).toBeInTheDocument()
+    // Score displays (may appear in multiple places: score circle + leaderboard)
+    expect(screen.getAllByText('720').length).toBeGreaterThan(0)
+    // Badges section renders
+    expect(screen.getByText('Your Badges')).toBeInTheDocument()
+
+    // Navigate back to Home
+    await user.click(screen.getByRole('link', { name: /home/i }))
+
+    // ── Screen 11: Family Hub (via Home nav card) ────────────────────────
+    await user.click(screen.getByRole('button', { name: /Family Hub/i }))
+
+    expect(screen.getByRole('heading', { name: /Family Hub/i })).toBeInTheDocument()
+    // Family member cards render
+    expect(screen.getByText('Family Members')).toBeInTheDocument()
+    expect(screen.getAllByText('Sarah').length).toBeGreaterThan(0)
+    expect(screen.getAllByText('James').length).toBeGreaterThan(0)
+    expect(screen.getAllByText('Emma').length).toBeGreaterThan(0)
+
+    // Full 11-screen journey complete — demo can be walked through end-to-end
   })
 
   it('maintains consistent branding across all screens', async () => {
@@ -223,5 +300,41 @@ describe('E2E: Sarah\'s Demo Journey', () => {
       // Active tab should have navy color class
       expect(link.className).toContain('text-pcl-navy')
     }
+  })
+
+  it('verifies accessibility attributes across interactive components', async () => {
+    const user = userEvent.setup()
+    render(<App />)
+
+    // Ensure we start on the Home page
+    await user.click(screen.getByRole('link', { name: /home/i }))
+
+    // Home: quick action buttons have aria-label attributes
+    const reserveBtn = screen.getByRole('button', { name: /Reserve Dining/i })
+    const excursionsBtn = screen.getByRole('button', { name: /Shore Excursions/i })
+    expect(reserveBtn).toHaveAttribute('aria-label')
+    expect(excursionsBtn).toHaveAttribute('aria-label')
+
+    // CheckIn page: progress bar has correct ARIA attributes at 60%
+    await user.click(screen.getByText('OceanReady Check-In'))
+    const progressBar = screen.getByRole('progressbar')
+    expect(progressBar).toHaveAttribute('aria-valuenow', '60')
+    expect(progressBar).toHaveAttribute('aria-valuemin', '0')
+    expect(progressBar).toHaveAttribute('aria-valuemax', '100')
+
+    // Navigate to Commerce and verify CartDrawer accessibility
+    await user.click(screen.getByRole('link', { name: /shop/i }))
+
+    // Add to cart button has aria-label (wait for loading)
+    const addBtn = await screen.findByRole('button', { name: /Add Sabatini's Italian Trattoria to cart/i })
+    expect(addBtn).toHaveAttribute('aria-label')
+
+    // Open cart drawer and verify ARIA role + label
+    await user.click(addBtn)
+    await user.click(screen.getByRole('button', { name: /View cart with 1 items/i }))
+    const cartDialog = screen.getByRole('dialog', { name: /Shopping cart/i })
+    expect(cartDialog).toHaveAttribute('role', 'dialog')
+    expect(cartDialog).toHaveAttribute('aria-label', 'Shopping cart')
+    expect(cartDialog).toHaveAttribute('aria-modal', 'true')
   })
 })

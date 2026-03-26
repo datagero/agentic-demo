@@ -1,8 +1,133 @@
-import { Link } from 'react-router-dom'
-import { guest, voyage, quickActions, recommendations } from '../data/mock'
+import { useState } from 'react'
+import { Link, useNavigate } from 'react-router-dom'
+import { guest, voyage, quickActions, recommendations, medallionMoments } from '../data/mock'
 import { ROUTES } from '../routes'
+import { useToast } from '../contexts/ToastContext'
+import type { MedallionMoment } from '../types'
+
+// ── MomentCard ────────────────────────────────────────────────────────────────
+
+interface MomentCardProps {
+  moment: MedallionMoment
+  isReasonExpanded: boolean
+  onDismiss: (id: string) => void
+  onCtaClick: (moment: MedallionMoment) => void
+  onToggleReason: (id: string) => void
+}
+
+function MomentCard({ moment, isReasonExpanded, onDismiss, onCtaClick, onToggleReason }: MomentCardProps) {
+  return (
+    <div className="card p-3 border-l-4 border-blue-500 relative">
+      {/* Dismiss button */}
+      <button
+        className="absolute top-2 right-2 text-gray-400 hover:text-gray-600 text-lg leading-none"
+        aria-label={`Dismiss ${moment.title}`}
+        onClick={() => onDismiss(moment.id)}
+      >
+        ×
+      </button>
+
+      {/* Header: icon + title */}
+      <div className="flex items-start gap-2 pr-6">
+        <span className="text-xl shrink-0" aria-hidden="true">{moment.icon}</span>
+        <p className="font-semibold text-sm text-pcl-text leading-tight">{moment.title}</p>
+      </div>
+
+      {/* Detail */}
+      <p className="text-xs text-gray-500 mt-1 ml-7">{moment.detail}</p>
+
+      {/* Badges */}
+      <div className="flex flex-wrap gap-1.5 mt-2 ml-7">
+        <span className="text-xs bg-gray-100 text-gray-600 rounded-full px-2 py-0.5">
+          📍 {moment.location}
+        </span>
+        <span className="text-xs bg-gray-100 text-gray-600 rounded-full px-2 py-0.5">
+          ⏰ {moment.timeContext}
+        </span>
+      </div>
+
+      {/* CTA */}
+      <div className="mt-2 ml-7">
+        <button
+          className="bg-pcl-navy text-white text-xs font-semibold rounded px-3 py-1.5 hover:opacity-90 transition-opacity"
+          onClick={() => onCtaClick(moment)}
+        >
+          {moment.cta.label}
+        </button>
+      </div>
+
+      {/* Why this? */}
+      <div className="mt-2 ml-7">
+        <button
+          className="text-xs text-blue-600 hover:underline"
+          onClick={() => onToggleReason(moment.id)}
+          aria-expanded={isReasonExpanded}
+        >
+          Why this?
+        </button>
+        {isReasonExpanded && (
+          <div
+            className="mt-1 bg-gray-50 rounded p-2 text-xs text-gray-600 animate-fade-in"
+            data-testid={`reason-panel-${moment.id}`}
+          >
+            {moment.reason}
+          </div>
+        )}
+      </div>
+    </div>
+  )
+}
+
+// ── CTA toast messages ────────────────────────────────────────────────────────
+
+function ctaToastMessage(action: string): string {
+  switch (action) {
+    case 'book-spa':       return 'Booking spa appointment…'
+    case 'reserve-dining': return 'Reserving your table…'
+    case 'view-family':    return 'Opening family location…'
+    case 'set-reminder':   return 'Reminder set for sunset!'
+    case 'view-alternatives': return 'Loading alternatives…'
+    case 'order-drink':    return 'Order placed!'
+    default:               return 'Got it!'
+  }
+}
+
+// ── Sort moments by priority ──────────────────────────────────────────────────
+
+const priorityOrder: Record<string, number> = { high: 0, medium: 1, low: 2 }
+
+function topMoments(count: number): MedallionMoment[] {
+  return [...medallionMoments]
+    .sort((a, b) => priorityOrder[a.priority] - priorityOrder[b.priority])
+    .slice(0, count)
+}
+
+// ── HomePage ──────────────────────────────────────────────────────────────────
 
 export default function HomePage() {
+  const navigate = useNavigate()
+  const { showToast } = useToast()
+
+  const [visibleMoments, setVisibleMoments] = useState<MedallionMoment[]>(() => topMoments(3))
+  const [expandedReasons, setExpandedReasons] = useState<Set<string>>(new Set())
+
+  function dismissMoment(id: string) {
+    setVisibleMoments(prev => prev.filter(m => m.id !== id))
+    setExpandedReasons(prev => { const s = new Set(prev); s.delete(id); return s })
+  }
+
+  function handleCta(moment: MedallionMoment) {
+    showToast(ctaToastMessage(moment.cta.action), 'success')
+  }
+
+  function toggleReason(id: string) {
+    setExpandedReasons(prev => {
+      const s = new Set(prev)
+      s.has(id) ? s.delete(id) : s.add(id)
+      return s
+    })
+  }
+
   return (
     <div className="flex flex-col bg-pcl-gray min-h-full page-enter">
       {/* Hero section */}
@@ -52,15 +177,35 @@ export default function HomePage() {
         </div>
       </Link>
 
+      {/* Medallion Moments — For You Right Now */}
+      {visibleMoments.length > 0 && (
+        <div className="px-4 mt-4">
+          <p className="section-label px-0">For You Right Now</p>
+          <div className="space-y-2">
+            {visibleMoments.map(moment => (
+              <MomentCard
+                key={moment.id}
+                moment={moment}
+                isReasonExpanded={expandedReasons.has(moment.id)}
+                onDismiss={dismissMoment}
+                onCtaClick={handleCta}
+                onToggleReason={toggleReason}
+              />
+            ))}
+          </div>
+        </div>
+      )}
+
       {/* Quick actions */}
       <div className="px-4 mt-4">
         <p className="section-label px-0">Quick Actions</p>
         <div className="grid grid-cols-2 gap-3">
-          {quickActions.map(({ icon, label, badge }) => (
+          {quickActions.map(({ icon, label, badge, route }) => (
             <button
               key={label}
-              className="card p-3 flex items-center gap-3 text-left hover:shadow-md transition-shadow"
+              className="card p-3 flex items-center gap-3 text-left hover:shadow-md transition-shadow cursor-pointer"
               aria-label={label}
+              onClick={() => navigate(route)}
             >
               <span className="text-xl shrink-0" aria-hidden="true">{icon}</span>
               <div className="min-w-0">
@@ -84,7 +229,12 @@ export default function HomePage() {
         </div>
         <div className="space-y-3">
           {recommendations.map((rec) => (
-            <button key={rec.id} className="card w-full p-4 flex items-start gap-3 text-left hover:shadow-md transition-shadow">
+            <button
+              key={rec.id}
+              className="card w-full p-4 flex items-start gap-3 text-left hover:shadow-md transition-shadow cursor-pointer"
+              onClick={() => navigate(rec.route)}
+              aria-label={rec.title}
+            >
               <span className="text-3xl shrink-0" aria-hidden="true">{rec.image}</span>
               <div className="flex-1 min-w-0">
                 <p className="font-semibold text-sm text-pcl-text">{rec.title}</p>
@@ -95,6 +245,51 @@ export default function HomePage() {
               </div>
             </button>
           ))}
+        </div>
+      </div>
+
+      {/* Post-Cruise / Your Voyage section */}
+      <div className="px-4 mt-4">
+        <p className="section-label px-0">Explore More</p>
+        <div className="space-y-2">
+          <button
+            className="card w-full p-4 flex items-center gap-3 text-left hover:shadow-md transition-shadow cursor-pointer"
+            onClick={() => navigate(ROUTES.VOYAGE_REWIND)}
+            aria-label="Voyage Rewind"
+          >
+            <span className="text-2xl shrink-0" aria-hidden="true">📸</span>
+            <div className="flex-1 min-w-0">
+              <p className="font-semibold text-sm text-pcl-text">Voyage Rewind</p>
+              <p className="text-xs text-gray-400 mt-0.5">Your trip memories</p>
+            </div>
+            <span className="text-gray-300 text-lg" aria-hidden="true">›</span>
+          </button>
+
+          <button
+            className="card w-full p-4 flex items-center gap-3 text-left hover:shadow-md transition-shadow cursor-pointer"
+            onClick={() => navigate(ROUTES.VOYAGE_SCORE)}
+            aria-label="Voyage Score"
+          >
+            <span className="text-2xl shrink-0" aria-hidden="true">🏆</span>
+            <div className="flex-1 min-w-0">
+              <p className="font-semibold text-sm text-pcl-text">Voyage Score</p>
+              <p className="text-xs text-gray-400 mt-0.5">720 pts — 2 badges to go</p>
+            </div>
+            <span className="text-gray-300 text-lg" aria-hidden="true">›</span>
+          </button>
+
+          <button
+            className="card w-full p-4 flex items-center gap-3 text-left hover:shadow-md transition-shadow cursor-pointer"
+            onClick={() => navigate(ROUTES.FAMILY)}
+            aria-label="Family Hub"
+          >
+            <span className="text-2xl shrink-0" aria-hidden="true">👨‍👩‍👧‍👦</span>
+            <div className="flex-1 min-w-0">
+              <p className="font-semibold text-sm text-pcl-text">Family Hub</p>
+              <p className="text-xs text-gray-400 mt-0.5">4 members tracked</p>
+            </div>
+            <span className="text-gray-300 text-lg" aria-hidden="true">›</span>
+          </button>
         </div>
       </div>
 
