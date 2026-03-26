@@ -62,11 +62,10 @@ describe('CheckInPage', () => {
     expect(aiBadges).toHaveLength(aiSteps.length)
   })
 
-  it('shows a Continue button for in-progress steps', () => {
+  it('shows a Continue button for the active in-progress step', () => {
     renderPage()
-    const inProgressSteps = checkInSteps.filter((s) => s.status === 'in-progress')
     const continueButtons = screen.getAllByText('Continue')
-    expect(continueButtons).toHaveLength(inProgressSteps.length)
+    expect(continueButtons).toHaveLength(1)
   })
 
   it('renders the guest name and tier', () => {
@@ -79,9 +78,10 @@ describe('CheckInPage', () => {
     renderPage()
     companions.forEach((comp) => {
       expect(screen.getByText(comp.name)).toBeInTheDocument()
-      // Use exact: false to handle text split across elements
+      // Use exact: false to handle text split across elements; use getAllByText since
+      // "Spouse" may appear both in companion card and in the pre-filled fields panel
       const escapedRelation = comp.relation.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')
-      expect(screen.getByText(new RegExp(escapedRelation))).toBeInTheDocument()
+      expect(screen.getAllByText(new RegExp(escapedRelation)).length).toBeGreaterThan(0)
     })
     // Check completion percentages are present
     expect(screen.getByText('80%')).toBeInTheDocument()
@@ -96,5 +96,60 @@ describe('CheckInPage', () => {
   it('shows the Check-In Steps section label', () => {
     renderPage()
     expect(screen.getByText('Check-In Steps')).toBeInTheDocument()
+  })
+
+  it('shows pre-filled fields for the active step', () => {
+    renderPage()
+    // Emergency Contact (s4) is the active in-progress step
+    expect(screen.getByText('Contact Name')).toBeInTheDocument()
+    expect(screen.getByText('Robert Mitchell')).toBeInTheDocument()
+    expect(screen.getByText('Phone Number')).toBeInTheDocument()
+    expect(screen.getByText('Relationship')).toBeInTheDocument()
+  })
+
+  it('Continue button advances the active step to complete and moves to next', async () => {
+    const user = userEvent.setup()
+    renderPage()
+
+    // Initially 3 of 5 complete
+    expect(screen.getByText('3 of 5 steps complete')).toBeInTheDocument()
+
+    // Click Continue on Emergency Contact step
+    const continueBtn = screen.getByText('Continue')
+    await user.click(continueBtn)
+
+    // Now 4 of 5 complete
+    expect(screen.getByText('4 of 5 steps complete')).toBeInTheDocument()
+  })
+
+  it('progress bar updates after Continue is clicked', async () => {
+    const user = userEvent.setup()
+    renderPage()
+
+    // Initial 60%
+    expect(screen.getByRole('progressbar')).toHaveAttribute('aria-valuenow', '60')
+
+    const continueBtn = screen.getByText('Continue')
+    await user.click(continueBtn)
+
+    // After advancing one step: 4/5 = 80%
+    expect(screen.getByRole('progressbar')).toHaveAttribute('aria-valuenow', '80')
+  })
+
+  it('shows success banner when all steps are complete', async () => {
+    const user = userEvent.setup()
+    renderPage()
+
+    // Click Continue twice to complete remaining steps (s4 and s5)
+    const continueBtn1 = screen.getByText('Continue')
+    await user.click(continueBtn1)
+
+    const continueBtn2 = screen.getByText('Continue')
+    await user.click(continueBtn2)
+
+    // All 5 complete - success banner appears
+    expect(screen.getByText('OceanReady Complete!')).toBeInTheDocument()
+    expect(screen.getByText('5 of 5 steps complete')).toBeInTheDocument()
+    expect(screen.getByRole('progressbar')).toHaveAttribute('aria-valuenow', '100')
   })
 })

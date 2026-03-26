@@ -1,6 +1,8 @@
 import { useState } from 'react'
 import { products, guest } from '../data/mock'
 import type { Product } from '../types'
+import { useCart } from '../contexts/CartContext'
+import CartDrawer from '../components/CartDrawer'
 
 const CATEGORIES = ['All', 'dining', 'spa', 'excursion', 'beverage', 'retail'] as const
 const CATEGORY_LABELS: Record<string, string> = {
@@ -13,6 +15,7 @@ const CATEGORY_LABELS: Record<string, string> = {
 }
 
 function ProductCard({ product }: { product: Product }) {
+  const { addItem } = useCart()
   const discountedPrice = product.medallionDiscount
     ? Math.round(product.price * 0.85)
     : product.price
@@ -46,6 +49,7 @@ function ProductCard({ product }: { product: Product }) {
               )}
             </div>
             <button
+              onClick={() => addItem(product)}
               className="bg-pcl-navy text-white text-xs font-semibold px-3 py-1.5 rounded-lg active:scale-95 transition-transform"
               aria-label={`Add ${product.name} to cart`}
             >
@@ -60,7 +64,8 @@ function ProductCard({ product }: { product: Product }) {
 
 export default function CommercePage() {
   const [activeCategory, setActiveCategory] = useState<string>('All')
-  const [cartCount, setCartCount] = useState(2)
+  const [cartOpen, setCartOpen] = useState(false)
+  const { totalCount } = useCart()
 
   const filtered = activeCategory === 'All'
     ? products
@@ -124,17 +129,20 @@ export default function CommercePage() {
       {/* Floating cart button */}
       <div className="sticky bottom-0 px-4 pb-4 pt-2 bg-gradient-to-t from-pcl-gray via-pcl-gray">
         <button
-          onClick={() => setCartCount((c) => c + 1)}
+          onClick={() => setCartOpen(true)}
           className="w-full btn-primary flex items-center justify-center gap-2"
-          aria-label={`View cart with ${cartCount} items`}
+          aria-label={`View cart with ${totalCount} items`}
         >
           <span aria-hidden="true">🛒</span>
           <span>View Cart</span>
           <span className="bg-pcl-gold text-pcl-navy text-xs font-bold rounded-full w-5 h-5 flex items-center justify-center">
-            {cartCount}
+            {totalCount}
           </span>
         </button>
       </div>
+
+      {/* Cart Drawer */}
+      <CartDrawer isOpen={cartOpen} onClose={() => setCartOpen(false)} />
     </div>
   )
 }

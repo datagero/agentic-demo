@@ -1,5 +1,6 @@
 import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom'
 import { AccessibilityProvider } from './contexts/AccessibilityContext'
+import { CartProvider } from './contexts/CartContext'
 import ErrorBoundary from './components/ErrorBoundary'
 import AppLayout from './layouts/AppLayout'
 import HomePage from './pages/HomePage'
@@ -22,6 +23,7 @@ function Screen({ children }: { children: React.ReactNode }) {
 function App() {
   return (
     <AccessibilityProvider>
+      <CartProvider>
       <BrowserRouter>
         <Routes>
           <Route element={<AppLayout />}>
@@ -38,6 +40,7 @@ function App() {
           </Route>
         </Routes>
       </BrowserRouter>
+      </CartProvider>
     </AccessibilityProvider>
   )
 }
