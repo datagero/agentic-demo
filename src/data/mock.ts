@@ -79,6 +79,59 @@ export const itineraryDays: ItineraryDay[] = [
       { id: 'c5', time: '5:00 PM', title: 'Return to Ship', location: 'Tender Platform', category: 'social', aiRecommended: false, medallionPersonalized: false },
     ],
   },
+  {
+    day: 4, date: 'Apr 10', port: 'San Juan, Puerto Rico', isSeaDay: false,
+    weather: { temp: 88, condition: 'Sunny', icon: '☀️' },
+    activities: [
+      { id: 'd1', time: '7:30 AM', title: 'Old San Juan Walking Tour', location: 'Pier Gate', category: 'excursion', aiRecommended: true, medallionPersonalized: false, description: 'UNESCO World Heritage site — rated 4.6 stars' },
+      { id: 'd2', time: '10:00 AM', title: 'El Morro Fortress Visit', location: 'Castillo San Felipe del Morro', category: 'excursion', aiRecommended: true, medallionPersonalized: true, description: 'Recommended based on your interest in history' },
+      { id: 'd3', time: '12:30 PM', title: 'Local Cuisine Lunch', location: 'La Mallorca, Old San Juan', category: 'dining', aiRecommended: true, medallionPersonalized: false, description: 'Award-winning Puerto Rican cuisine' },
+      { id: 'd4', time: '3:00 PM', title: 'Condado Beach Relax', location: 'Condado Beach', category: 'wellness', aiRecommended: false, medallionPersonalized: false },
+      { id: 'd5', time: '5:30 PM', title: 'Return to Ship & Sail Away', location: 'Pier 4, San Juan', category: 'social', aiRecommended: false, medallionPersonalized: false },
+    ],
+  },
+  {
+    day: 5, date: 'Apr 11', port: 'St. Thomas, USVI', isSeaDay: false,
+    weather: { temp: 85, condition: 'Partly Cloudy', icon: '⛅' },
+    activities: [
+      { id: 'e1', time: '8:00 AM', title: 'Coral World Ocean Park', location: 'Coral World, Estate Caret Bay', category: 'excursion', aiRecommended: false, medallionPersonalized: false },
+      { id: 'e2', time: '9:30 AM', title: 'Trunk Bay Snorkel Tour', location: 'Trunk Bay, St. John', category: 'excursion', aiRecommended: true, medallionPersonalized: true, description: 'One of the top 10 beaches in the world' },
+      { id: 'e3', time: '12:00 PM', title: 'Charlotte Amalie Shopping', location: 'Main Street, Charlotte Amalie', category: 'social', aiRecommended: false, medallionPersonalized: false, description: 'Duty-free jewelry, electronics and rum' },
+      { id: 'e4', time: '2:30 PM', title: 'Magens Bay Beach Afternoon', location: 'Magens Bay', category: 'wellness', aiRecommended: true, medallionPersonalized: false, description: 'Pristine white sand beach — top-rated by guests' },
+      { id: 'e5', time: '4:30 PM', title: 'Return to Ship', location: 'Crown Bay Pier', category: 'social', aiRecommended: false, medallionPersonalized: false },
+    ],
+  },
+  {
+    day: 6, date: 'Apr 12', port: 'At Sea', isSeaDay: true,
+    weather: { temp: 83, condition: 'Sunny', icon: '☀️' },
+    activities: [
+      { id: 'f1', time: '7:00 AM', title: 'Morning Stretch & Yoga', location: 'Sun Deck', category: 'wellness', aiRecommended: true, medallionPersonalized: true, description: 'Recommended based on your wellness profile' },
+      { id: 'f2', time: '10:00 AM', title: 'Trivia Challenge', location: 'Wheelhouse Bar', category: 'entertainment', aiRecommended: false, medallionPersonalized: false },
+      { id: 'f3', time: '12:00 PM', title: 'Pool Deck Lunch', location: 'Trident Grill, Lido Deck', category: 'dining', aiRecommended: false, medallionPersonalized: false },
+      { id: 'f4', time: '2:00 PM', title: 'Afternoon Spa Treatment', location: 'Lotus Spa, Deck 15', category: 'wellness', aiRecommended: true, medallionPersonalized: true, description: 'Gold members: complimentary aromatherapy add-on' },
+      { id: 'f5', time: '8:30 PM', title: 'Farewell Variety Show', location: 'Princess Theater', category: 'entertainment', aiRecommended: false, medallionPersonalized: false },
+    ],
+  },
+  {
+    day: 7, date: 'Apr 13', port: 'At Sea', isSeaDay: true,
+    weather: { temp: 81, condition: 'Partly Cloudy', icon: '⛅' },
+    activities: [
+      { id: 'g1', time: '8:00 AM', title: 'Captain\'s Farewell Breakfast', location: 'Allegro Dining Room', category: 'dining', aiRecommended: true, medallionPersonalized: true, description: 'Exclusive breakfast with the Captain for Gold members' },
+      { id: 'g2', time: '10:30 AM', title: 'Art Auction Preview', location: 'Grand Atrium, Deck 6', category: 'entertainment', aiRecommended: false, medallionPersonalized: false },
+      { id: 'g3', time: '1:00 PM', title: 'Poolside BBQ', location: 'Sky Pool Deck', category: 'dining', aiRecommended: false, medallionPersonalized: false },
+      { id: 'g4', time: '3:00 PM', title: 'Packing & Disembarkation Prep', location: 'Cabin D412', category: 'social', aiRecommended: false, medallionPersonalized: false, description: 'Luggage must be outside cabin by 11 PM' },
+      { id: 'g5', time: '7:00 PM', title: 'Farewell Dinner', location: 'Sabatini\'s Italian Trattoria', category: 'dining', aiRecommended: true, medallionPersonalized: true, description: 'Based on your preference for Italian cuisine' },
+    ],
+  },
+  {
+    day: 8, date: 'Apr 14', port: 'Fort Lauderdale, FL', isSeaDay: false,
+    weather: { temp: 80, condition: 'Sunny', icon: '☀️' },
+    activities: [
+      { id: 'h1', time: '6:30 AM', title: 'Early Disembarkation Breakfast', location: 'Horizon Court', category: 'dining', aiRecommended: false, medallionPersonalized: false },
+      { id: 'h2', time: '7:30 AM', title: 'Self-Assist Disembarkation', location: 'Deck 3 Exit', category: 'social', aiRecommended: false, medallionPersonalized: false, description: 'Carry your own luggage for earliest departure' },
+      { id: 'h3', time: '9:00 AM', title: 'Standard Disembarkation', location: 'Terminal 2', category: 'social', aiRecommended: false, medallionPersonalized: false },
+    ],
+  },
 ]
 
 // ── Products ──────────────────────────────────────────────────────────────────

@@ -80,13 +80,58 @@ describe('ItineraryPage', () => {
     expect(screen.getByText('Activities')).toBeInTheDocument()
   })
 
-  it('shows empty state when selecting a day with no activities', async () => {
+  it('switches to day 4 and shows San Juan activities', async () => {
     const user = userEvent.setup()
     renderPage()
 
-    // Day 4 (San Juan) has no itinerary data in mock — should show fallback
     await user.click(screen.getByText('Day 4'))
-    expect(screen.getByText(/select a day to view your personalized schedule/i)).toBeInTheDocument()
+    expect(screen.getByText('Old San Juan Walking Tour')).toBeInTheDocument()
+    expect(screen.getByText('El Morro Fortress Visit')).toBeInTheDocument()
+  })
+
+  it('day 4 has the expected number of activities', async () => {
+    const user = userEvent.setup()
+    renderPage()
+
+    await user.click(screen.getByText('Day 4'))
+    const day4 = itineraryDays.find((d) => d.day === 4)!
+    expect(day4.activities.length).toBe(5)
+  })
+
+  it('switches to day 5 and shows St. Thomas activities', async () => {
+    const user = userEvent.setup()
+    renderPage()
+
+    await user.click(screen.getByText('Day 5'))
+    expect(screen.getByText('Trunk Bay Snorkel Tour')).toBeInTheDocument()
+    expect(screen.getByText('Charlotte Amalie Shopping')).toBeInTheDocument()
+  })
+
+  it('switches to day 6 and shows sea day activities', async () => {
+    const user = userEvent.setup()
+    renderPage()
+
+    await user.click(screen.getByText('Day 6'))
+    expect(screen.getByText('Morning Stretch & Yoga')).toBeInTheDocument()
+    expect(screen.getByText('Trivia Challenge')).toBeInTheDocument()
+  })
+
+  it('switches to day 7 and shows farewell activities', async () => {
+    const user = userEvent.setup()
+    renderPage()
+
+    await user.click(screen.getByText('Day 7'))
+    expect(screen.getByText("Captain's Farewell Breakfast")).toBeInTheDocument()
+    expect(screen.getByText('Farewell Dinner')).toBeInTheDocument()
+  })
+
+  it('switches to day 8 and shows disembarkation activities', async () => {
+    const user = userEvent.setup()
+    renderPage()
+
+    await user.click(screen.getByText('Day 8'))
+    expect(screen.getByText('Early Disembarkation Breakfast')).toBeInTheDocument()
+    expect(screen.getByText('Standard Disembarkation')).toBeInTheDocument()
   })
 
   it('switches to day 2 and shows day 2 activities', async () => {
