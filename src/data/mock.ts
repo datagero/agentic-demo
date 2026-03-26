@@ -2,7 +2,7 @@ import type {
   Guest, Voyage, PortStop, ItineraryDay, Product,
   ShipDeck, AnalyticsData, QuickAction, Recommendation,
   ContentItem, NotificationDraft, JourneyAnalyticsData,
-  CheckInStep, CompanionProfile,
+  CheckInStep, CompanionProfile, MedallionMoment,
 } from '../types'
 
 // ── Guest Profile ─────────────────────────────────────────────────────────────
@@ -367,4 +367,81 @@ export const checkInSteps: CheckInStep[] = [
 export const companions: CompanionProfile[] = [
   { name: 'James Mitchell', initials: 'JM', relation: 'Spouse', completionPct: 80, currentStep: 'Emergency Contact' },
   { name: 'Emma Mitchell', initials: 'EM', relation: 'Child (14)', completionPct: 40, currentStep: 'Health Screening' },
+]
+
+// ── Medallion Moments ─────────────────────────────────────────────────────────
+
+export const medallionMoments: MedallionMoment[] = [
+  {
+    id: 'moment-1',
+    type: 'spa',
+    title: 'Your preferred therapist has a cancellation',
+    detail: 'Deep tissue massage at 3:00 PM — only 1 min walk',
+    location: 'Deck 7, near Lotus Spa',
+    timeContext: 'Available now',
+    cta: { label: 'Book Now', action: 'book-spa' },
+    reason: 'Based on your location (Deck 7) and your spa booking from Day 2',
+    icon: '💆',
+    priority: 'high'
+  },
+  {
+    id: 'moment-2',
+    type: 'dining',
+    title: 'Crown Grill has a table right now',
+    detail: 'No wait — walk-in available for 2 guests',
+    location: 'Deck 6, Crown Grill',
+    timeContext: '3 min walk',
+    cta: { label: 'Reserve Table', action: 'reserve-dining' },
+    reason: 'Based on dinner time (6:30 PM) and your preference for Crown Grill from Day 1',
+    icon: '🍽️',
+    priority: 'high'
+  },
+  {
+    id: 'moment-3',
+    type: 'family',
+    title: 'Emma just arrived at Adventure Ocean',
+    detail: 'Checked in at Kids Club — supervised activities until 9 PM',
+    location: 'Deck 15, Adventure Ocean',
+    timeContext: 'Just now',
+    cta: { label: 'View Location', action: 'view-family' },
+    reason: 'Based on Emma\'s Medallion location update (Deck 15)',
+    icon: '👧',
+    priority: 'medium'
+  },
+  {
+    id: 'moment-4',
+    type: 'sunset',
+    title: 'Tonight\'s sunset at 6:47 PM',
+    detail: 'Best view from Deck 16 aft — 2 min walk from you',
+    location: 'Deck 16, Aft Observation',
+    timeContext: 'In 45 min',
+    cta: { label: 'Set Reminder', action: 'set-reminder' },
+    reason: 'Based on your location (Deck 14) and sunset time from ship navigation data',
+    icon: '🌅',
+    priority: 'medium'
+  },
+  {
+    id: 'moment-5',
+    type: 'weather',
+    title: 'Rain expected in Cozumel at 2 PM',
+    detail: '3 indoor alternatives: San Gervasio ruins (covered), Museo de la Isla, Cacao Factory tour',
+    location: 'Cozumel, Mexico',
+    timeContext: 'In 2 hours',
+    cta: { label: 'View Alternatives', action: 'view-alternatives' },
+    reason: 'Based on weather forecast for your current port and your excursion booking at 1 PM',
+    icon: '🌧️',
+    priority: 'high'
+  },
+  {
+    id: 'moment-6',
+    type: 'dining',
+    title: 'Your usual — Aperol Spritz?',
+    detail: 'One-tap order to your current location',
+    location: 'Deck 15, Pool Bar',
+    timeContext: 'Right now',
+    cta: { label: 'Order Now', action: 'order-drink' },
+    reason: 'Based on your location (Pool Bar) and your beverage history (3 Aperol Spritz this voyage)',
+    icon: '🍹',
+    priority: 'low'
+  }
 ]

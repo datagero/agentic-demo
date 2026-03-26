@@ -152,6 +152,23 @@ export interface JourneyAnalyticsData {
   conversionDrivers: { driver: string; impact: string; direction: 'up' | 'down' }[]
 }
 
+// ── Medallion Moments (Screen 9) ──────────────────────────────────────────────
+
+export type MomentType = 'dining' | 'spa' | 'activity' | 'family' | 'weather' | 'sunset'
+
+export interface MedallionMoment {
+  id: string
+  type: MomentType
+  title: string
+  detail: string
+  location: string
+  timeContext: string
+  cta: { label: string; action: string }
+  reason: string
+  icon: string
+  priority: 'high' | 'medium' | 'low'
+}
+
 // ── OceanReady Check-In (Screen 8) ───────────────────────────────────────────
 
 export interface CheckInStep {
