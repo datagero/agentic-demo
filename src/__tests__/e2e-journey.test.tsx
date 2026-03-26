@@ -88,9 +88,9 @@ describe('E2E: Sarah\'s Demo Journey', () => {
     expect(screen.getByRole('heading', { name: /shop & book/i })).toBeInTheDocument()
     expect(screen.getByText(/early bird special/i)).toBeInTheDocument()
 
-    // Filter by dining
+    // Filter by dining — wait for skeleton to resolve first
     await user.click(screen.getByText('Dining'))
-    expect(screen.getByText("Sabatini's Italian Trattoria")).toBeInTheDocument()
+    expect(await screen.findByText("Sabatini's Italian Trattoria")).toBeInTheDocument()
     expect(screen.getByText('Crown Grill Steakhouse')).toBeInTheDocument()
 
     // Verify Medallion pricing
@@ -150,8 +150,8 @@ describe('E2E: Sarah\'s Demo Journey', () => {
     expect(screen.getByRole('heading', { name: /analytics/i })).toBeInTheDocument()
     expect(screen.getByText('Stakeholder View')).toBeInTheDocument()
 
-    // Verify all 4 KPIs
-    expect(screen.getByText('NPS Score')).toBeInTheDocument()
+    // Verify all 4 KPIs — wait for loading state to resolve
+    expect(await screen.findByText('NPS Score')).toBeInTheDocument()
     expect(screen.getByText('72')).toBeInTheDocument()
     expect(screen.getByText('App Rating')).toBeInTheDocument()
     expect(screen.getByText('Booking Conv.')).toBeInTheDocument()

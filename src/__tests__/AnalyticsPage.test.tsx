@@ -1,5 +1,5 @@
-import { render, screen } from '@testing-library/react'
-import { describe, it, expect } from 'vitest'
+import { render, screen, act } from '@testing-library/react'
+import { describe, it, expect, beforeEach, afterEach, vi } from 'vitest'
 import userEvent from '@testing-library/user-event'
 import { BrowserRouter } from 'react-router-dom'
 import AnalyticsPage from '../pages/AnalyticsPage'
@@ -13,30 +13,55 @@ function renderPage() {
   )
 }
 
+async function advancePastLoading() {
+  await act(async () => {
+    vi.runAllTimers()
+  })
+}
+
 describe('AnalyticsPage', () => {
+  beforeEach(() => {
+    vi.useFakeTimers()
+  })
+
+  afterEach(() => {
+    vi.useRealTimers()
+  })
+
   it('renders the analytics heading', () => {
     renderPage()
     expect(screen.getByRole('heading', { name: /analytics/i })).toBeInTheDocument()
   })
 
-  it('shows all 4 KPI cards', () => {
+  it('shows skeleton placeholders for KPI cards while loading', () => {
     renderPage()
+    // KPI labels should not be visible during loading
+    expect(screen.queryByText(analyticsData.kpis[0].label)).not.toBeInTheDocument()
+    // The skeleton container should be present
+    expect(screen.getByLabelText(/loading kpi metrics/i)).toBeInTheDocument()
+  })
+
+  it('shows all 4 KPI cards after loading', async () => {
+    renderPage()
+    await advancePastLoading()
     analyticsData.kpis.forEach((kpi) => {
       expect(screen.getByText(kpi.label)).toBeInTheDocument()
       expect(screen.getByText(kpi.value)).toBeInTheDocument()
     })
   })
 
-  it('displays trend indicators for each KPI', () => {
+  it('displays trend indicators for each KPI after loading', async () => {
     renderPage()
+    await advancePastLoading()
     analyticsData.kpis.forEach((kpi) => {
       const trendText = `${Math.abs(kpi.trend).toFixed(1)}%`
       expect(screen.getByText(trendText)).toBeInTheDocument()
     })
   })
 
-  it('shows target values for each KPI', () => {
+  it('shows target values for each KPI after loading', async () => {
     renderPage()
+    await advancePastLoading()
     analyticsData.kpis.forEach((kpi) => {
       expect(screen.getByText(`Target: ${kpi.target}`)).toBeInTheDocument()
     })
@@ -70,8 +95,13 @@ describe('AnalyticsPage', () => {
   })
 
   it('toggles between time periods', async () => {
-    const user = userEvent.setup()
     renderPage()
+    await advancePastLoading()
+
+    // After loading, use real timers for user interaction
+    vi.useRealTimers()
+    const user = userEvent.setup()
+
     const thirtyDay = screen.getByText('Last 30 Days')
     await user.click(thirtyDay)
     // Verify it's now active (has gold background)

@@ -1,5 +1,5 @@
-import { render, screen } from '@testing-library/react'
-import { describe, it, expect } from 'vitest'
+import { render, screen, act } from '@testing-library/react'
+import { describe, it, expect, beforeEach, afterEach, vi } from 'vitest'
 import userEvent from '@testing-library/user-event'
 import { BrowserRouter } from 'react-router-dom'
 import CommercePage from '../pages/CommercePage'
@@ -16,14 +16,37 @@ function renderPage() {
   )
 }
 
+async function advancePastLoading() {
+  await act(async () => {
+    vi.runAllTimers()
+  })
+}
+
 describe('CommercePage', () => {
+  beforeEach(() => {
+    vi.useFakeTimers()
+  })
+
+  afterEach(() => {
+    vi.useRealTimers()
+  })
+
   it('renders the commerce heading', () => {
     renderPage()
     expect(screen.getByRole('heading', { name: /shop & book/i })).toBeInTheDocument()
   })
 
-  it('displays all product cards', () => {
+  it('shows skeleton placeholders while loading', () => {
     renderPage()
+    // During loading, product names should not be visible
+    expect(screen.queryByText(products[0].name)).not.toBeInTheDocument()
+    // Loading text should be visible
+    expect(screen.getByText(/loading/i)).toBeInTheDocument()
+  })
+
+  it('displays all product cards after loading', async () => {
+    renderPage()
+    await advancePastLoading()
     products.forEach((product) => {
       expect(screen.getByText(product.name)).toBeInTheDocument()
     })
@@ -38,8 +61,12 @@ describe('CommercePage', () => {
   })
 
   it('filters products by category', async () => {
-    const user = userEvent.setup()
     renderPage()
+    await advancePastLoading()
+
+    // After loading, use real timers for user interaction
+    vi.useRealTimers()
+    const user = userEvent.setup()
 
     await user.click(screen.getByText('Dining'))
     const diningProducts = products.filter((p) => p.category === 'dining')
@@ -54,8 +81,9 @@ describe('CommercePage', () => {
     })
   })
 
-  it('shows Medallion discount badges', () => {
+  it('shows Medallion discount badges after loading', async () => {
     renderPage()
+    await advancePastLoading()
     const discountedCount = products.filter((p) => p.medallionDiscount).length
     const badges = screen.getAllByText('Gold −15%')
     expect(badges.length).toBe(discountedCount)
@@ -72,14 +100,16 @@ describe('CommercePage', () => {
     expect(screen.getByLabelText(/view cart with 0 items/i)).toBeInTheDocument()
   })
 
-  it('has Add to cart buttons for each product', () => {
+  it('has Add to cart buttons for each product after loading', async () => {
     renderPage()
+    await advancePastLoading()
     const addButtons = screen.getAllByText('Add')
     expect(addButtons.length).toBe(products.length)
   })
 
-  it('shows product ratings', () => {
+  it('shows product ratings after loading', async () => {
     renderPage()
+    await advancePastLoading()
     const uniqueRatings = [...new Set(products.map((p) => String(p.rating)))]
     uniqueRatings.forEach((rating) => {
       expect(screen.getAllByText(rating).length).toBeGreaterThan(0)

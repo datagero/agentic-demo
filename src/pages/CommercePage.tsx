@@ -1,8 +1,9 @@
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import { products, guest } from '../data/mock'
 import type { Product } from '../types'
 import { useCart } from '../contexts/CartContext'
 import CartDrawer from '../components/CartDrawer'
+import { SkeletonCard } from '../components/SkeletonLoader'
 
 const CATEGORIES = ['All', 'dining', 'spa', 'excursion', 'beverage', 'retail'] as const
 const CATEGORY_LABELS: Record<string, string> = {
@@ -66,6 +67,12 @@ export default function CommercePage() {
   const [activeCategory, setActiveCategory] = useState<string>('All')
   const [cartOpen, setCartOpen] = useState(false)
   const { totalCount } = useCart()
+  const [isLoading, setIsLoading] = useState(true)
+
+  useEffect(() => {
+    const timer = setTimeout(() => setIsLoading(false), 500)
+    return () => clearTimeout(timer)
+  }, [])
 
   const filtered = activeCategory === 'All'
     ? products
@@ -120,10 +127,21 @@ export default function CommercePage() {
 
       {/* Product list */}
       <div className="px-4 mt-3 space-y-3 pb-20" aria-live="polite">
-        <p className="section-label px-0">{filtered.length} {activeCategory === 'All' ? 'Items' : CATEGORY_LABELS[activeCategory]}</p>
-        {filtered.map((product) => (
-          <ProductCard key={product.id} product={product} />
-        ))}
+        {isLoading ? (
+          <>
+            <p className="section-label px-0" aria-label="Loading products">Loading…</p>
+            {Array.from({ length: 4 }).map((_, i) => (
+              <SkeletonCard key={i} />
+            ))}
+          </>
+        ) : (
+          <div className="space-y-3 animate-[fadeIn_300ms_ease-out]">
+            <p className="section-label px-0">{filtered.length} {activeCategory === 'All' ? 'Items' : CATEGORY_LABELS[activeCategory]}</p>
+            {filtered.map((product) => (
+              <ProductCard key={product.id} product={product} />
+            ))}
+          </div>
+        )}
       </div>
 
       {/* Floating cart button */}

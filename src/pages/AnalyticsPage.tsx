@@ -1,7 +1,8 @@
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { getAnalyticsData } from '../data/mock'
 import { ROUTES } from '../routes'
+import { SkeletonLoader } from '../components/SkeletonLoader'
 
 function TrendArrow({ trend }: { trend: number }) {
   const isPositive = trend > 0
@@ -35,7 +36,13 @@ function MiniBarChart({ data }: { data: { date: string; value: number }[] }) {
 export default function AnalyticsPage() {
   const navigate = useNavigate()
   const [period, setPeriod] = useState<'7d' | '30d'>('7d')
+  const [isLoading, setIsLoading] = useState(true)
   const { kpis, engagementFunnel, spendBreakdown, dailyRevenue, alerts } = getAnalyticsData(period)
+
+  useEffect(() => {
+    const timer = setTimeout(() => setIsLoading(false), 500)
+    return () => clearTimeout(timer)
+  }, [])
 
   return (
     <div className="flex flex-col bg-pcl-gray min-h-full page-enter">
@@ -68,35 +75,51 @@ export default function AnalyticsPage() {
       {/* KPI cards */}
       <div className="px-4 mt-4">
         <p className="section-label px-0">Key Metrics</p>
-        <div className="grid grid-cols-2 gap-3">
-          {kpis.map((kpi) => (
-            <button key={kpi.label} className="card p-4 text-left hover:shadow-md transition-shadow w-full" onClick={() => navigate(ROUTES.JOURNEY)} aria-label={`${kpi.label} — tap for journey analytics`}>
-              <div className="flex items-center justify-between mb-2">
-                <span className="text-xl" aria-hidden="true">{kpi.icon}</span>
-                <TrendArrow trend={kpi.trend} />
+        {isLoading ? (
+          <div className="grid grid-cols-2 gap-3" aria-label="Loading KPI metrics">
+            {Array.from({ length: 4 }).map((_, i) => (
+              <div key={i} className="card p-4 animate-pulse space-y-2">
+                <div className="flex items-center justify-between">
+                  <div className="w-6 h-6 bg-gray-200 rounded" />
+                  <div className="w-10 h-3 bg-gray-200 rounded" />
+                </div>
+                <SkeletonLoader lines={1} width="60%" height="0.75rem" />
+                <SkeletonLoader lines={1} width="80%" height="1.25rem" />
+                <div className="h-1 bg-gray-200 rounded-full mt-1.5" />
               </div>
-              <p className="text-xs text-gray-400 font-medium">{kpi.label}</p>
-              <p className="text-xl font-bold text-pcl-navy mt-0.5">{kpi.value}</p>
-              <div className="flex items-center justify-between mt-1.5">
-                <span className="text-[10px] text-gray-400">Target: {kpi.target}</span>
-                <span className="text-[10px] text-gray-400">Prev: {kpi.previousValue}</span>
-              </div>
-              {/* Progress to target */}
-              <div className="h-1 bg-gray-100 rounded-full mt-1.5 overflow-hidden">
-                <div
-                  className="h-full bg-pcl-gold rounded-full"
-                  style={{
-                    width: `${Math.min(
-                      (parseFloat(kpi.value.replace(/[^0-9.]/g, '')) /
-                        parseFloat(kpi.target.replace(/[^0-9.]/g, ''))) * 100,
-                      100
-                    )}%`,
-                  }}
-                />
-              </div>
-            </button>
-          ))}
-        </div>
+            ))}
+          </div>
+        ) : (
+          <div className="grid grid-cols-2 gap-3 animate-[fadeIn_300ms_ease-out]">
+            {kpis.map((kpi) => (
+              <button key={kpi.label} className="card p-4 text-left hover:shadow-md transition-shadow w-full" onClick={() => navigate(ROUTES.JOURNEY)} aria-label={`${kpi.label} — tap for journey analytics`}>
+                <div className="flex items-center justify-between mb-2">
+                  <span className="text-xl" aria-hidden="true">{kpi.icon}</span>
+                  <TrendArrow trend={kpi.trend} />
+                </div>
+                <p className="text-xs text-gray-400 font-medium">{kpi.label}</p>
+                <p className="text-xl font-bold text-pcl-navy mt-0.5">{kpi.value}</p>
+                <div className="flex items-center justify-between mt-1.5">
+                  <span className="text-[10px] text-gray-400">Target: {kpi.target}</span>
+                  <span className="text-[10px] text-gray-400">Prev: {kpi.previousValue}</span>
+                </div>
+                {/* Progress to target */}
+                <div className="h-1 bg-gray-100 rounded-full mt-1.5 overflow-hidden">
+                  <div
+                    className="h-full bg-pcl-gold rounded-full"
+                    style={{
+                      width: `${Math.min(
+                        (parseFloat(kpi.value.replace(/[^0-9.]/g, '')) /
+                          parseFloat(kpi.target.replace(/[^0-9.]/g, ''))) * 100,
+                        100
+                      )}%`,
+                    }}
+                  />
+                </div>
+              </button>
+            ))}
+          </div>
+        )}
       </div>
 
       {/* Revenue chart */}
