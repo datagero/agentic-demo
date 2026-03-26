@@ -11,6 +11,7 @@ import AnalyticsPage from './pages/AnalyticsPage'
 import CmsPage from './pages/CmsPage'
 import JourneyPage from './pages/JourneyPage'
 import CheckInPage from './pages/CheckInPage'
+import CheckoutPage from './pages/CheckoutPage'
 import { ROUTES } from './routes'
 
 export { ROUTES }
@@ -35,6 +36,7 @@ function App() {
             <Route path={ROUTES.CMS} element={<Screen><CmsPage /></Screen>} />
             <Route path={ROUTES.JOURNEY} element={<Screen><JourneyPage /></Screen>} />
             <Route path={ROUTES.CHECKIN} element={<Screen><CheckInPage /></Screen>} />
+            <Route path={ROUTES.CHECKOUT} element={<Screen><CheckoutPage /></Screen>} />
             {/* Catch-all redirect to home */}
             <Route path="*" element={<Navigate to={ROUTES.HOME} replace />} />
           </Route>

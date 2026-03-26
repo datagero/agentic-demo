@@ -1,4 +1,6 @@
+import { useNavigate } from 'react-router-dom'
 import { useCart } from '../contexts/CartContext'
+import { ROUTES } from '../routes'
 
 interface CartDrawerProps {
   isOpen: boolean
@@ -7,6 +9,12 @@ interface CartDrawerProps {
 
 export default function CartDrawer({ isOpen, onClose }: CartDrawerProps) {
   const { items, totalPrice, totalCount, removeItem, clearCart } = useCart()
+  const navigate = useNavigate()
+
+  function handleCheckout() {
+    onClose()
+    navigate(ROUTES.CHECKOUT)
+  }
 
   return (
     <>
@@ -119,6 +127,7 @@ export default function CartDrawer({ isOpen, onClose }: CartDrawerProps) {
                 Clear
               </button>
               <button
+                onClick={handleCheckout}
                 className="flex-[2] btn-primary"
                 aria-label={`Checkout — total $${totalPrice}`}
               >

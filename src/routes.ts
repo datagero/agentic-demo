@@ -9,4 +9,5 @@ export const ROUTES = {
   CMS: '/cms',
   JOURNEY: '/journey',
   CHECKIN: '/checkin',
+  CHECKOUT: '/checkout',
 } as const
