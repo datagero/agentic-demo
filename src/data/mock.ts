@@ -232,7 +232,7 @@ export const recommendations: Recommendation[] = [
 
 // ── Analytics ─────────────────────────────────────────────────────────────────
 
-export const analyticsData: AnalyticsData = {
+export const analyticsData7d: AnalyticsData = {
   kpis: [
     { label: 'NPS Score', value: '72', previousValue: '65', trend: 10.8, target: '75', icon: '⭐', unit: 'pts' },
     { label: 'App Rating', value: '4.6', previousValue: '4.3', trend: 7.0, target: '4.7', icon: '📱', unit: '/5' },
@@ -266,6 +266,46 @@ export const analyticsData: AnalyticsData = {
     { id: 'al2', message: 'Spa booking surge on Deck 15 — consider adding slots', severity: 'info', time: '15 min ago' },
     { id: 'al3', message: 'Check-in wait time approaching 8 min threshold', severity: 'warning', time: '1 hr ago' },
   ],
+}
+
+export const analyticsData30d: AnalyticsData = {
+  kpis: [
+    { label: 'NPS Score', value: '74', previousValue: '68', trend: 8.8, target: '75', icon: '⭐', unit: 'pts' },
+    { label: 'App Rating', value: '4.7', previousValue: '4.4', trend: 6.8, target: '4.8', icon: '📱', unit: '/5' },
+    { label: 'Booking Conv.', value: '38%', previousValue: '31%', trend: 22.6, target: '40%', icon: '💳' },
+    { label: 'Rev/Guest', value: '$1,124', previousValue: '$940', trend: 19.6, target: '$1,200', icon: '💰' },
+  ],
+  engagementFunnel: [
+    { stage: 'App Downloads', count: 520000, percentage: 100 },
+    { stage: 'Registrations', count: 412000, percentage: 79 },
+    { stage: 'Active Users', count: 308000, percentage: 59 },
+    { stage: 'Pre-Cruise Bookers', count: 195000, percentage: 38 },
+    { stage: 'Repeat Bookers', count: 82000, percentage: 16 },
+  ],
+  spendBreakdown: [
+    { category: 'Dining', amount: 478, percentage: 43, color: 'bg-pcl-navy' },
+    { category: 'Spa & Wellness', amount: 312, percentage: 28, color: 'bg-pcl-gold' },
+    { category: 'Excursions', amount: 223, percentage: 20, color: 'bg-blue-400' },
+    { category: 'Retail & Photo', amount: 111, percentage: 10, color: 'bg-gray-400' },
+  ],
+  dailyRevenue: [
+    { date: 'W1', value: 168000 },
+    { date: 'W2', value: 185000 },
+    { date: 'W3', value: 201000 },
+    { date: 'W4', value: 224000 },
+  ],
+  alerts: [
+    { id: 'al4', message: 'Monthly NPS record broken — 74 pts, highest in 2 years', severity: 'success', time: '1 hr ago' },
+    { id: 'al5', message: 'Excursion bookings up 31% vs prior 30-day period', severity: 'info', time: '3 hrs ago' },
+    { id: 'al6', message: 'Post-cruise survey completion below 20% — review CTA', severity: 'warning', time: '6 hrs ago' },
+  ],
+}
+
+/** Backwards-compatible alias — resolves to the 7-day dataset. */
+export const analyticsData = analyticsData7d
+
+export function getAnalyticsData(period: '7d' | '30d'): AnalyticsData {
+  return period === '30d' ? analyticsData30d : analyticsData7d
 }
 
 // ── CMS Content Items ─────────────────────────────────────────────────────────

@@ -1,6 +1,6 @@
 import { useState } from 'react'
 import { useNavigate } from 'react-router-dom'
-import { analyticsData } from '../data/mock'
+import { getAnalyticsData } from '../data/mock'
 import { ROUTES } from '../routes'
 
 function TrendArrow({ trend }: { trend: number }) {
@@ -35,7 +35,7 @@ function MiniBarChart({ data }: { data: { date: string; value: number }[] }) {
 export default function AnalyticsPage() {
   const navigate = useNavigate()
   const [period, setPeriod] = useState<'7d' | '30d'>('7d')
-  const { kpis, engagementFunnel, spendBreakdown, dailyRevenue, alerts } = analyticsData
+  const { kpis, engagementFunnel, spendBreakdown, dailyRevenue, alerts } = getAnalyticsData(period)
 
   return (
     <div className="flex flex-col bg-pcl-gray min-h-full page-enter">

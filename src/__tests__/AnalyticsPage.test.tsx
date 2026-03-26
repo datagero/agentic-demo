@@ -3,7 +3,7 @@ import { describe, it, expect } from 'vitest'
 import userEvent from '@testing-library/user-event'
 import { BrowserRouter } from 'react-router-dom'
 import AnalyticsPage from '../pages/AnalyticsPage'
-import { analyticsData } from '../data/mock'
+import { analyticsData, analyticsData30d } from '../data/mock'
 
 function renderPage() {
   return render(
@@ -81,5 +81,25 @@ describe('AnalyticsPage', () => {
   it('renders the revenue bar chart', () => {
     renderPage()
     expect(screen.getByLabelText(/daily revenue chart/i)).toBeInTheDocument()
+  })
+
+  it('shows 30d KPI values after toggling to Last 30 Days', async () => {
+    const user = userEvent.setup()
+    renderPage()
+    await user.click(screen.getByText('Last 30 Days'))
+    analyticsData30d.kpis.forEach((kpi) => {
+      expect(screen.getByText(kpi.value)).toBeInTheDocument()
+    })
+  })
+
+  it('shows different KPI values for 7d vs 30d', async () => {
+    const user = userEvent.setup()
+    renderPage()
+    // Default is 7d — verify 7d value present
+    expect(screen.getByText(analyticsData.kpis[3].value)).toBeInTheDocument()
+    // Switch to 30d — verify 30d value present and 7d value gone
+    await user.click(screen.getByText('Last 30 Days'))
+    expect(screen.getByText(analyticsData30d.kpis[3].value)).toBeInTheDocument()
+    expect(screen.queryByText(analyticsData.kpis[3].value)).not.toBeInTheDocument()
   })
 })
