@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useState, useEffect, useRef } from 'react'
 import { contentItems, notificationDrafts } from '../data/mock'
 
 const STATUS_STYLES: Record<string, string> = {
@@ -23,11 +23,55 @@ const AUDIENCE_ICONS: Record<string, string> = {
   'port-day': '⚓',
 }
 
+type SyncState = 'idle' | 'syncing' | 'synced'
+type SendState = 'idle' | 'sending' | 'sent'
+
 export default function CmsPage() {
   const [tab, setTab] = useState<'content' | 'notifications'>('content')
+  const [syncState, setSyncState] = useState<SyncState>('idle')
+  const [sendState, setSendState] = useState<SendState>('idle')
+  const syncTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null)
+  const sendTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null)
+
+  useEffect(() => {
+    return () => {
+      if (syncTimerRef.current) clearTimeout(syncTimerRef.current)
+      if (sendTimerRef.current) clearTimeout(sendTimerRef.current)
+    }
+  }, [])
+
+  function handleSyncNow() {
+    if (syncState !== 'idle') return
+    setSyncState('syncing')
+    syncTimerRef.current = setTimeout(() => {
+      setSyncState('synced')
+      syncTimerRef.current = setTimeout(() => {
+        setSyncState('idle')
+      }, 2000)
+    }, 1500)
+  }
+
+  function handleSendNotification() {
+    if (sendState !== 'idle') return
+    setSendState('sending')
+    sendTimerRef.current = setTimeout(() => {
+      setSendState('sent')
+      sendTimerRef.current = setTimeout(() => {
+        setSendState('idle')
+      }, 2000)
+    }, 1000)
+  }
 
   return (
     <div className="flex flex-col bg-pcl-gray min-h-full page-enter">
+      {/* ARIA live region for sync feedback */}
+      <div aria-live="polite" aria-atomic="true" className="sr-only">
+        {syncState === 'syncing' && 'Syncing content...'}
+        {syncState === 'synced' && 'Content synced successfully'}
+        {sendState === 'sending' && 'Sending notification...'}
+        {sendState === 'sent' && 'Notification sent successfully'}
+      </div>
+
       {/* Header */}
       <div className="bg-pcl-navy text-white px-4 pt-6 pb-4">
         <p className="text-pcl-gold text-xs font-semibold uppercase tracking-widest mb-1">
@@ -70,9 +114,28 @@ export default function CmsPage() {
               <p className="font-semibold text-sm text-pcl-text">AEM Sync</p>
               <p className="text-xs text-gray-400">Last synced 2 hours ago · 4 of 6 items synced</p>
             </div>
-            <button className="text-xs font-semibold text-pcl-navy bg-blue-50 rounded-full px-3 py-1">
-              Sync Now
-            </button>
+            <div className="flex items-center gap-2">
+              {syncState === 'synced' && (
+                <span
+                  className="text-xs font-semibold text-green-700 bg-green-100 rounded-full px-2 py-0.5"
+                  data-testid="synced-badge"
+                >
+                  Synced ✓
+                </span>
+              )}
+              <button
+                onClick={handleSyncNow}
+                disabled={syncState !== 'idle'}
+                aria-label={syncState === 'syncing' ? 'Syncing...' : 'Sync Now'}
+                className={`text-xs font-semibold rounded-full px-3 py-1 transition-colors ${
+                  syncState === 'syncing'
+                    ? 'text-gray-400 bg-gray-100 cursor-not-allowed'
+                    : 'text-pcl-navy bg-blue-50 hover:bg-blue-100'
+                }`}
+              >
+                {syncState === 'syncing' ? 'Syncing...' : 'Sync Now'}
+              </button>
+            </div>
           </div>
 
           <p className="section-label px-0">Content Items</p>
@@ -124,9 +187,26 @@ export default function CmsPage() {
                 </button>
               ))}
             </div>
-            <button className="btn-primary w-full text-sm" aria-label="Send notification">
-              Send Notification
-            </button>
+            <div className="flex items-center gap-2">
+              {sendState === 'sent' && (
+                <span
+                  className="text-xs font-semibold text-green-700 bg-green-100 rounded-full px-2 py-0.5"
+                  data-testid="sent-badge"
+                >
+                  Sent!
+                </span>
+              )}
+              <button
+                onClick={handleSendNotification}
+                disabled={sendState !== 'idle'}
+                aria-label={sendState === 'sending' ? 'Sending...' : 'Send notification'}
+                className={`btn-primary flex-1 text-sm transition-opacity ${
+                  sendState === 'sending' ? 'opacity-60 cursor-not-allowed' : ''
+                }`}
+              >
+                {sendState === 'sending' ? 'Sending...' : 'Send Notification'}
+              </button>
+            </div>
           </div>
 
           <p className="section-label px-0">Recent Notifications</p>

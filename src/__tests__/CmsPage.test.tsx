@@ -1,5 +1,5 @@
-import { render, screen, within } from '@testing-library/react'
-import { describe, it, expect } from 'vitest'
+import { render, screen, act, fireEvent } from '@testing-library/react'
+import { describe, it, expect, vi, beforeEach, afterEach } from 'vitest'
 import userEvent from '@testing-library/user-event'
 import { BrowserRouter } from 'react-router-dom'
 import CmsPage from '../pages/CmsPage'
@@ -106,5 +106,77 @@ describe('CmsPage', () => {
 
     await user.click(screen.getByRole('button', { name: /^content$/i }))
     expect(screen.getByText(contentItems[0].title)).toBeInTheDocument()
+  })
+
+  describe('Sync Now feedback', () => {
+    beforeEach(() => {
+      vi.useFakeTimers()
+    })
+    afterEach(() => {
+      vi.useRealTimers()
+    })
+
+    it('shows syncing indicator when Sync Now is clicked', () => {
+      renderCmsPage()
+
+      const syncBtn = screen.getByRole('button', { name: /sync now/i })
+      act(() => { fireEvent.click(syncBtn) })
+
+      expect(screen.getByRole('button', { name: /syncing\.\.\./i })).toBeInTheDocument()
+    })
+
+    it('shows Synced badge after 1.5s and resets after 2 more seconds', () => {
+      renderCmsPage()
+
+      const syncBtn = screen.getByRole('button', { name: /sync now/i })
+      act(() => { fireEvent.click(syncBtn) })
+
+      // After 1.5s syncing completes → show synced badge
+      act(() => { vi.advanceTimersByTime(1500) })
+      expect(screen.getByTestId('synced-badge')).toBeInTheDocument()
+
+      // After 2 more seconds the badge resets
+      act(() => { vi.advanceTimersByTime(2000) })
+      expect(screen.queryByTestId('synced-badge')).not.toBeInTheDocument()
+      expect(screen.getByRole('button', { name: /sync now/i })).toBeInTheDocument()
+    })
+  })
+
+  describe('Send Notification feedback', () => {
+    beforeEach(() => {
+      vi.useFakeTimers()
+    })
+    afterEach(() => {
+      vi.useRealTimers()
+    })
+
+    it('shows sending indicator when Send Notification is clicked', () => {
+      renderCmsPage()
+
+      act(() => { fireEvent.click(screen.getByRole('button', { name: /^notifications$/i })) })
+
+      const sendBtn = screen.getByRole('button', { name: /send notification/i })
+      act(() => { fireEvent.click(sendBtn) })
+
+      expect(screen.getByRole('button', { name: /sending\.\.\./i })).toBeInTheDocument()
+    })
+
+    it('shows Sent badge after 1s and resets after 2 more seconds', () => {
+      renderCmsPage()
+
+      act(() => { fireEvent.click(screen.getByRole('button', { name: /^notifications$/i })) })
+
+      const sendBtn = screen.getByRole('button', { name: /send notification/i })
+      act(() => { fireEvent.click(sendBtn) })
+
+      // After 1s sending completes → show sent badge
+      act(() => { vi.advanceTimersByTime(1000) })
+      expect(screen.getByTestId('sent-badge')).toBeInTheDocument()
+
+      // After 2 more seconds the badge resets
+      act(() => { vi.advanceTimersByTime(2000) })
+      expect(screen.queryByTestId('sent-badge')).not.toBeInTheDocument()
+      expect(screen.getByRole('button', { name: /send notification/i })).toBeInTheDocument()
+    })
   })
 })
