@@ -2,7 +2,7 @@ import type {
   Guest, Voyage, PortStop, ItineraryDay, Product,
   ShipDeck, AnalyticsData, QuickAction, Recommendation,
   ContentItem, NotificationDraft, JourneyAnalyticsData,
-  CheckInStep, CompanionProfile, MedallionMoment,
+  CheckInStep, CompanionProfile, MedallionMoment, VoyageRewindData,
 } from '../types'
 
 // ── Guest Profile ─────────────────────────────────────────────────────────────
@@ -445,3 +445,80 @@ export const medallionMoments: MedallionMoment[] = [
     priority: 'low'
   }
 ]
+
+// ── Voyage Rewind ─────────────────────────────────────────────────────────────
+
+export const voyageRewindData: VoyageRewindData = {
+  stats: [
+    { label: 'Steps Walked', value: '52,000', icon: '👟' },
+    { label: 'Restaurants', value: '6', icon: '🍽️' },
+    { label: 'Sunsets', value: '4', icon: '🌅' },
+    { label: 'Ports Visited', value: '8', icon: '⚓' },
+  ],
+  dayHighlights: [
+    {
+      day: 1,
+      port: 'Fort Lauderdale, FL',
+      highlights: ['Embarkation & Welcome', 'Sail Away Party on Lido Deck', 'Welcome Dinner at Allegro'],
+      medallionData: 'Cabin D412 unlocked · Medallion wallet activated',
+    },
+    {
+      day: 2,
+      port: 'At Sea',
+      highlights: ['Sunrise Yoga on Sun Deck', 'Lotus Spa deep tissue massage', 'Chef\'s Table 8-course dinner'],
+      medallionData: 'Spa booking auto-confirmed · Gold upgrade applied',
+    },
+    {
+      day: 3,
+      port: 'Princess Cays, Bahamas',
+      highlights: ['Snorkeling Adventure (4.8★)', 'Beach BBQ Lunch', 'Kayak Tour in turquoise waters'],
+      medallionData: 'Tender priority boarding · 2 excursions tracked',
+    },
+    {
+      day: 4,
+      port: 'San Juan, Puerto Rico',
+      highlights: ['Old San Juan Walking Tour', 'El Morro Fortress Visit', 'Local Cuisine at La Mallorca'],
+      medallionData: 'History interest tag matched · 3 AI recommendations used',
+    },
+    {
+      day: 5,
+      port: 'St. Thomas, USVI',
+      highlights: ['Trunk Bay Snorkel Tour', 'Charlotte Amalie Duty-Free Shopping', 'Magens Bay beach afternoon'],
+      medallionData: 'Top 10 beach achieved · Shopping preferences logged',
+    },
+    {
+      day: 6,
+      port: 'At Sea',
+      highlights: ['Morning Stretch & Yoga', 'Trivia Challenge at Wheelhouse Bar', 'Farewell Variety Show'],
+      medallionData: 'Wellness streak: 3 days · Gold aromatherapy add-on applied',
+    },
+    {
+      day: 7,
+      port: 'At Sea',
+      highlights: ['Captain\'s Farewell Breakfast', 'Art Auction Preview', 'Farewell Dinner at Sabatini\'s'],
+      medallionData: 'Captain\'s Circle exclusive breakfast · Gold member perk used',
+    },
+    {
+      day: 8,
+      port: 'Fort Lauderdale, FL',
+      highlights: ['Early Disembarkation Breakfast', 'Self-Assist Disembarkation', 'Safe travels home'],
+      medallionData: 'Smooth disembarkation · Voyage memories saved',
+    },
+  ],
+  voyageCard: {
+    guestName: 'Sarah Mitchell',
+    tier: 'Gold',
+    voyageName: 'Eastern Caribbean — Caribbean Princess',
+    dates: 'Apr 7 – Apr 14, 2025',
+    statsLine: '7 nights · 4 ports · 52,000 steps · 6 restaurants',
+    favoritePort: 'Princess Cays, Bahamas',
+  },
+  nextSailing: {
+    name: 'Mediterranean Discovery — Royal Princess',
+    dates: 'Sep 12 – Sep 26, 2025',
+    favoritePorts: ['Santorini, Greece', 'Dubrovnik, Croatia', 'Amalfi Coast, Italy'],
+    cabin: 'Balcony Suite available on Deck 10',
+    price: '$2,899/person',
+    discount: '15% Gold member discount applied',
+  },
+}

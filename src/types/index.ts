@@ -186,3 +186,33 @@ export interface CompanionProfile {
   completionPct: number
   currentStep: string
 }
+
+// ── Voyage Rewind (Post-Cruise Memory) ───────────────────────────────────────
+
+export interface DayHighlight {
+  day: number
+  port: string
+  highlights: string[]
+  medallionData: string
+}
+
+export interface VoyageRewindData {
+  stats: { label: string; value: string; icon: string }[]
+  dayHighlights: DayHighlight[]
+  voyageCard: {
+    guestName: string
+    tier: string
+    voyageName: string
+    dates: string
+    statsLine: string
+    favoritePort: string
+  }
+  nextSailing: {
+    name: string
+    dates: string
+    favoritePorts: string[]
+    cabin: string
+    price: string
+    discount: string
+  }
+}

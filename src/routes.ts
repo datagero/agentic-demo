@@ -10,4 +10,5 @@ export const ROUTES = {
   JOURNEY: '/journey',
   CHECKIN: '/checkin',
   CHECKOUT: '/checkout',
+  VOYAGE_REWIND: '/voyage-rewind',
 } as const
