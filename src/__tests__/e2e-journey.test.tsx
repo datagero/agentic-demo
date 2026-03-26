@@ -290,8 +290,8 @@ describe('E2E: Sarah\'s Demo Journey', () => {
     // Navigate to Commerce and verify CartDrawer accessibility
     await user.click(screen.getByRole('link', { name: /shop/i }))
 
-    // Add to cart button has aria-label
-    const addBtn = screen.getByRole('button', { name: /Add Sabatini's Italian Trattoria to cart/i })
+    // Add to cart button has aria-label (wait for loading)
+    const addBtn = await screen.findByRole('button', { name: /Add Sabatini's Italian Trattoria to cart/i })
     expect(addBtn).toHaveAttribute('aria-label')
 
     // Open cart drawer and verify ARIA role + label

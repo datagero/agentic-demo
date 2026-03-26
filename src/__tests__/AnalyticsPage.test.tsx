@@ -114,8 +114,10 @@ describe('AnalyticsPage', () => {
   })
 
   it('shows 30d KPI values after toggling to Last 30 Days', async () => {
-    const user = userEvent.setup()
     renderPage()
+    await advancePastLoading()
+    vi.useRealTimers()
+    const user = userEvent.setup()
     await user.click(screen.getByText('Last 30 Days'))
     analyticsData30d.kpis.forEach((kpi) => {
       expect(screen.getByText(kpi.value)).toBeInTheDocument()
@@ -123,8 +125,10 @@ describe('AnalyticsPage', () => {
   })
 
   it('shows different KPI values for 7d vs 30d', async () => {
-    const user = userEvent.setup()
     renderPage()
+    await advancePastLoading()
+    vi.useRealTimers()
+    const user = userEvent.setup()
     // Default is 7d — verify 7d value present
     expect(screen.getByText(analyticsData.kpis[3].value)).toBeInTheDocument()
     // Switch to 30d — verify 30d value present and 7d value gone
