@@ -169,6 +169,44 @@ export interface MedallionMoment {
   priority: 'high' | 'medium' | 'low'
 }
 
+// ── Family Hub (Stories #59 & #60) ───────────────────────────────────────────
+
+export interface FamilyMember {
+  id: string
+  name: string
+  initials: string
+  relation: string
+  deck: number
+  location: string
+  activity: string
+  lastSeen: string
+  avatarColor: string
+}
+
+export interface FamilyActivity {
+  id: string
+  name: string
+  time: string
+  location: string
+  confirmed: string[]
+  pending: string[]
+}
+
+export interface FamilySpend {
+  memberId: string
+  name: string
+  total: number
+  categories: { name: string; amount: number }[]
+}
+
+export interface FamilyHubData {
+  members: FamilyMember[]
+  activities: FamilyActivity[]
+  spending: FamilySpend[]
+  dailyBudgetAvg: number
+  familyTotal: number
+}
+
 // ── OceanReady Check-In (Screen 8) ───────────────────────────────────────────
 
 export interface CheckInStep {
@@ -185,6 +223,41 @@ export interface CompanionProfile {
   relation: string
   completionPct: number
   currentStep: string
+}
+
+// ── Voyage Score Gamification ─────────────────────────────────────────────────
+
+export interface VoyageBadge {
+  id: string
+  name: string
+  description: string
+  icon: string
+  unlocked: boolean
+  progress?: string // e.g. "15/18 decks"
+}
+
+export interface RewardTier {
+  points: number
+  reward: string
+  icon: string
+  unlocked: boolean
+}
+
+export interface LeaderboardEntry {
+  rank: number
+  name: string
+  score: number
+  isYou?: boolean
+}
+
+export interface VoyageScoreData {
+  score: number
+  maxScore: number
+  badges: VoyageBadge[]
+  rewardTiers: RewardTier[]
+  leaderboard: LeaderboardEntry[]
+  shipRank: number
+  totalGuests: number
 }
 
 // ── Voyage Rewind (Post-Cruise Memory) ───────────────────────────────────────

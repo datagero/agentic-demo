@@ -3,6 +3,7 @@ import type {
   ShipDeck, AnalyticsData, QuickAction, Recommendation,
   ContentItem, NotificationDraft, JourneyAnalyticsData,
   CheckInStep, CompanionProfile, MedallionMoment, VoyageRewindData,
+  VoyageScoreData, FamilyHubData,
 } from '../types'
 
 // ── Guest Profile ─────────────────────────────────────────────────────────────
@@ -521,4 +522,182 @@ export const voyageRewindData: VoyageRewindData = {
     price: '$2,899/person',
     discount: '15% Gold member discount applied',
   },
+}
+
+// ── Voyage Score Gamification ─────────────────────────────────────────────────
+
+export const voyageScoreData: VoyageScoreData = {
+  score: 720,
+  maxScore: 1000,
+  badges: [
+    {
+      id: 'first-sunrise',
+      name: 'First Sunrise',
+      description: 'On deck before 7am',
+      icon: '🌅',
+      unlocked: true,
+    },
+    {
+      id: 'deck-explorer',
+      name: 'Deck Explorer',
+      description: 'Visited 15 of 18 decks',
+      icon: '🚢',
+      unlocked: true,
+      progress: '15/18',
+    },
+    {
+      id: 'foodie',
+      name: 'Foodie',
+      description: 'Dined at 5+ restaurants',
+      icon: '🍽️',
+      unlocked: true,
+    },
+    {
+      id: 'social-butterfly',
+      name: 'Social Butterfly',
+      description: 'Attend 3+ group activities',
+      icon: '🦋',
+      unlocked: false,
+      progress: '1/3',
+    },
+    {
+      id: 'sunset-chaser',
+      name: 'Sunset Chaser',
+      description: 'Watched 4 sunsets',
+      icon: '🌇',
+      unlocked: true,
+    },
+    {
+      id: 'adventure-seeker',
+      name: 'Adventure Seeker',
+      description: 'Book 3+ excursions',
+      icon: '🏄',
+      unlocked: false,
+      progress: '2/3',
+    },
+  ],
+  rewardTiers: [
+    { points: 250, reward: 'Free specialty coffee', icon: '☕', unlocked: true },
+    { points: 500, reward: 'Priority restaurant seating', icon: '🪑', unlocked: true },
+    { points: 750, reward: 'Complimentary spa treatment', icon: '💆', unlocked: false },
+    { points: 1000, reward: 'Voyage Champion pin', icon: '🏆', unlocked: false },
+  ],
+  leaderboard: [
+    { rank: 45, name: 'James T.', score: 841 },
+    { rank: 46, name: 'Maria L.', score: 798 },
+    { rank: 47, name: 'Sarah M.', score: 720, isYou: true },
+    { rank: 48, name: 'David K.', score: 703 },
+    { rank: 49, name: 'Priya N.', score: 688 },
+  ],
+  shipRank: 47,
+  totalGuests: 3200,
+}
+
+// ── Family Hub ────────────────────────────────────────────────────────────────
+
+export const familyHubData: FamilyHubData = {
+  members: [
+    {
+      id: 'sarah',
+      name: 'Sarah',
+      initials: 'S',
+      relation: 'You',
+      deck: 7,
+      location: 'Stateroom B420',
+      activity: 'In cabin',
+      lastSeen: 'Now',
+      avatarColor: 'bg-pcl-gold',
+    },
+    {
+      id: 'james',
+      name: 'James',
+      initials: 'J',
+      relation: 'Husband',
+      deck: 15,
+      location: 'Main Pool',
+      activity: 'Swimming',
+      lastSeen: '5 min ago',
+      avatarColor: 'bg-blue-500',
+    },
+    {
+      id: 'emma',
+      name: 'Emma',
+      initials: 'E',
+      relation: 'Daughter',
+      deck: 12,
+      location: 'Adventure Ocean',
+      activity: 'Kids Club (supervised)',
+      lastSeen: 'Checked in 2pm',
+      avatarColor: 'bg-pink-500',
+    },
+    {
+      id: 'margaret',
+      name: 'Margaret',
+      initials: 'M',
+      relation: 'Mother',
+      deck: 6,
+      location: 'Crown Grill',
+      activity: 'Dining',
+      lastSeen: '10 min ago',
+      avatarColor: 'bg-purple-500',
+    },
+  ],
+  activities: [
+    {
+      id: 'dinner-crown',
+      name: 'Dinner at Crown Grill',
+      time: 'Tonight 7pm',
+      location: 'Crown Grill, Deck 6',
+      confirmed: ['Sarah', 'James', 'Margaret'],
+      pending: ['Emma'],
+    },
+    {
+      id: 'snorkeling-cozumel',
+      name: 'Snorkeling at Cozumel',
+      time: 'Tomorrow 10am',
+      location: 'Cozumel, Mexico',
+      confirmed: ['Sarah', 'James'],
+      pending: ['Emma', 'Margaret'],
+    },
+  ],
+  spending: [
+    {
+      memberId: 'sarah',
+      name: 'Sarah',
+      total: 342,
+      categories: [
+        { name: 'Dining', amount: 180 },
+        { name: 'Spa', amount: 120 },
+        { name: 'Excursions', amount: 42 },
+      ],
+    },
+    {
+      memberId: 'james',
+      name: 'James',
+      total: 156,
+      categories: [
+        { name: 'Beverages', amount: 89 },
+        { name: 'Retail', amount: 67 },
+      ],
+    },
+    {
+      memberId: 'emma',
+      name: 'Emma',
+      total: 28,
+      categories: [
+        { name: 'Kids Activities', amount: 28 },
+      ],
+    },
+    {
+      memberId: 'margaret',
+      name: 'Margaret',
+      total: 215,
+      categories: [
+        { name: 'Spa', amount: 150 },
+        { name: 'Dining', amount: 65 },
+      ],
+    },
+  ],
+  familyTotal: 741,
+  dailyBudgetAvg: 185,
 }

@@ -15,6 +15,8 @@ import JourneyPage from './pages/JourneyPage'
 import CheckInPage from './pages/CheckInPage'
 import CheckoutPage from './pages/CheckoutPage'
 import VoyageRewindPage from './pages/VoyageRewindPage'
+import VoyageScorePage from './pages/VoyageScorePage'
+import FamilyHubPage from './pages/FamilyHubPage'
 import { ROUTES } from './routes'
 
 export { ROUTES }
@@ -43,6 +45,8 @@ function App() {
             <Route path={ROUTES.CHECKIN} element={<Screen><CheckInPage /></Screen>} />
             <Route path={ROUTES.CHECKOUT} element={<Screen><CheckoutPage /></Screen>} />
             <Route path={ROUTES.VOYAGE_REWIND} element={<Screen><VoyageRewindPage /></Screen>} />
+            <Route path={ROUTES.VOYAGE_SCORE} element={<Screen><VoyageScorePage /></Screen>} />
+            <Route path={ROUTES.FAMILY} element={<Screen><FamilyHubPage /></Screen>} />
             {/* Catch-all redirect to home */}
             <Route path="*" element={<Navigate to={ROUTES.HOME} replace />} />
           </Route>
