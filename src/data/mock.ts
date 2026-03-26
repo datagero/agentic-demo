@@ -201,10 +201,10 @@ export const shipDecks: ShipDeck[] = [
 // ── Quick Actions (Home) ──────────────────────────────────────────────────────
 
 export const quickActions: QuickAction[] = [
-  { icon: '🍽️', label: 'Reserve Dining', badge: '3 available' },
-  { icon: '🛳️', label: 'Shore Excursions', badge: '5 ports' },
-  { icon: '💆', label: 'Spa & Wellness', badge: '20% off' },
-  { icon: '📋', label: 'Check-in', badge: 'Complete' },
+  { icon: '🍽️', label: 'Reserve Dining', badge: '3 available', route: '/commerce' },
+  { icon: '🛳️', label: 'Shore Excursions', badge: '5 ports', route: '/itinerary' },
+  { icon: '💆', label: 'Spa & Wellness', badge: '20% off', route: '/commerce' },
+  { icon: '📋', label: 'Check-in', badge: 'Complete', route: '/checkin' },
 ]
 
 // ── Recommendations (Home) ───────────────────────────────────────────────────
@@ -214,16 +214,19 @@ export const recommendations: Recommendation[] = [
     id: 'r1', title: 'Chef\'s Table Experience', subtitle: '$89/person · Deck 6',
     image: '👨‍🍳', category: 'dining',
     aiReason: 'Based on your love of Italian cuisine',
+    route: '/commerce',
   },
   {
     id: 'r2', title: 'Snorkeling at Princess Cays', subtitle: '$79/person · Day 3',
     image: '🤿', category: 'excursion',
     aiReason: 'Top-rated for adventurous travelers',
+    route: '/itinerary',
   },
   {
     id: 'r3', title: 'Couples Spa Retreat', subtitle: '$199/couple · Lotus Spa',
     image: '🧖', category: 'wellness',
     aiReason: 'Gold members save $50',
+    route: '/commerce',
   },
 ]
 

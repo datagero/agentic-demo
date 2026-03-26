@@ -1,8 +1,10 @@
-import { Link } from 'react-router-dom'
+import { Link, useNavigate } from 'react-router-dom'
 import { guest, voyage, quickActions, recommendations } from '../data/mock'
 import { ROUTES } from '../routes'
 
 export default function HomePage() {
+  const navigate = useNavigate()
+
   return (
     <div className="flex flex-col bg-pcl-gray min-h-full page-enter">
       {/* Hero section */}
@@ -56,11 +58,12 @@ export default function HomePage() {
       <div className="px-4 mt-4">
         <p className="section-label px-0">Quick Actions</p>
         <div className="grid grid-cols-2 gap-3">
-          {quickActions.map(({ icon, label, badge }) => (
+          {quickActions.map(({ icon, label, badge, route }) => (
             <button
               key={label}
-              className="card p-3 flex items-center gap-3 text-left hover:shadow-md transition-shadow"
+              className="card p-3 flex items-center gap-3 text-left hover:shadow-md transition-shadow cursor-pointer"
               aria-label={label}
+              onClick={() => navigate(route)}
             >
               <span className="text-xl shrink-0" aria-hidden="true">{icon}</span>
               <div className="min-w-0">
@@ -84,7 +87,12 @@ export default function HomePage() {
         </div>
         <div className="space-y-3">
           {recommendations.map((rec) => (
-            <button key={rec.id} className="card w-full p-4 flex items-start gap-3 text-left hover:shadow-md transition-shadow">
+            <button
+              key={rec.id}
+              className="card w-full p-4 flex items-start gap-3 text-left hover:shadow-md transition-shadow cursor-pointer"
+              onClick={() => navigate(rec.route)}
+              aria-label={rec.title}
+            >
               <span className="text-3xl shrink-0" aria-hidden="true">{rec.image}</span>
               <div className="flex-1 min-w-0">
                 <p className="font-semibold text-sm text-pcl-text">{rec.title}</p>

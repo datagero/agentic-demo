@@ -103,6 +103,7 @@ export interface QuickAction {
   icon: string
   label: string
   badge?: string
+  route: string
 }
 
 export interface Recommendation {
@@ -112,6 +113,7 @@ export interface Recommendation {
   image: string // emoji
   category: string
   aiReason: string
+  route: string
 }
 
 // ── CMS & Notifications (Screen 6) ───────────────────────────────────────────

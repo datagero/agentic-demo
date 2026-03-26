@@ -1,14 +1,23 @@
 import { render, screen } from '@testing-library/react'
+import userEvent from '@testing-library/user-event'
 import { describe, it, expect } from 'vitest'
-import { BrowserRouter } from 'react-router-dom'
+import { MemoryRouter, Route, Routes } from 'react-router-dom'
 import HomePage from '../pages/HomePage'
 import { guest, voyage, recommendations, quickActions } from '../data/mock'
 
-function renderPage() {
+function renderPage(initialPath = '/') {
+  const Sentinel = ({ label }: { label: string }) => <div data-testid={`route-${label}`}>{label}</div>
+
   return render(
-    <BrowserRouter>
-      <HomePage />
-    </BrowserRouter>
+    <MemoryRouter initialEntries={[initialPath]}>
+      <Routes>
+        <Route path="/" element={<HomePage />} />
+        <Route path="/checkin" element={<Sentinel label="checkin" />} />
+        <Route path="/commerce" element={<Sentinel label="commerce" />} />
+        <Route path="/itinerary" element={<Sentinel label="itinerary" />} />
+        <Route path="/navigator" element={<Sentinel label="navigator" />} />
+      </Routes>
+    </MemoryRouter>
   )
 }
 
@@ -55,5 +64,47 @@ describe('HomePage', () => {
   it('shows the AI badge', () => {
     renderPage()
     expect(screen.getByText('AI')).toBeInTheDocument()
+  })
+
+  it('quick action Check-in navigates to /checkin', async () => {
+    renderPage()
+    await userEvent.click(screen.getByLabelText('Check-in'))
+    expect(screen.getByTestId('route-checkin')).toBeInTheDocument()
+  })
+
+  it('quick action Reserve Dining navigates to /commerce', async () => {
+    renderPage()
+    await userEvent.click(screen.getByLabelText('Reserve Dining'))
+    expect(screen.getByTestId('route-commerce')).toBeInTheDocument()
+  })
+
+  it('quick action Shore Excursions navigates to /itinerary', async () => {
+    renderPage()
+    await userEvent.click(screen.getByLabelText('Shore Excursions'))
+    expect(screen.getByTestId('route-itinerary')).toBeInTheDocument()
+  })
+
+  it('quick action Spa & Wellness navigates to /commerce', async () => {
+    renderPage()
+    await userEvent.click(screen.getByLabelText('Spa & Wellness'))
+    expect(screen.getByTestId('route-commerce')).toBeInTheDocument()
+  })
+
+  it('recommendation Chef\'s Table navigates to /commerce', async () => {
+    renderPage()
+    await userEvent.click(screen.getByLabelText("Chef's Table Experience"))
+    expect(screen.getByTestId('route-commerce')).toBeInTheDocument()
+  })
+
+  it('recommendation Snorkeling navigates to /itinerary', async () => {
+    renderPage()
+    await userEvent.click(screen.getByLabelText('Snorkeling at Princess Cays'))
+    expect(screen.getByTestId('route-itinerary')).toBeInTheDocument()
+  })
+
+  it('recommendation Couples Spa Retreat navigates to /commerce', async () => {
+    renderPage()
+    await userEvent.click(screen.getByLabelText('Couples Spa Retreat'))
+    expect(screen.getByTestId('route-commerce')).toBeInTheDocument()
   })
 })
